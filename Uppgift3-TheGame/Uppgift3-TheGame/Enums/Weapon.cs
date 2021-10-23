@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Uppgift3_TheGame
+﻿namespace Uppgift3_TheGame.Enums
 {
     public enum Weapon
     {

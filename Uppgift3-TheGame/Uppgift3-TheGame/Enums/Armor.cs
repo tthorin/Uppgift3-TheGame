@@ -1,6 +1,6 @@
 ﻿namespace Uppgift3_TheGame.Enums
 {
-    enum Armor
+    public enum Armor
     {
         BirthdaySuit,
         Cloth = 5,

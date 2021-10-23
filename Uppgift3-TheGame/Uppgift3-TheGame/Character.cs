@@ -1,11 +1,14 @@
-﻿using System;
-using System.Threading;
-using static System.Net.Mime.MediaTypeNames;
+﻿
 
 namespace Uppgift3_TheGame
 {
+    using System;
+    using System.Threading;
+    using DTO;
+
     public class Character
     {
+        CombatMessages msg = new();
         public string Name { get; set; } = "";
         public int MaxHealth { get; set; } = 100;
         public int CurrentHealth { get; set; } = 0;
@@ -16,7 +19,9 @@ namespace Uppgift3_TheGame
         public int Gold { get; set; } = 0;
         public bool Alive { get; set; } = true;
 
-        Random rng = new();
+
+        protected Random rng = new();
+
 
         public Character()
         {
@@ -29,30 +34,46 @@ namespace Uppgift3_TheGame
         }
         public virtual bool TakeDamage(int damage)
         {   
-            int blocked = 0;
+            (string msg, int blocked) result = DoRoll(false, Defense, Toughness);
 
-            if (rng.Next(1, 21) <= Defense) blocked = Toughness;
-            else blocked = Toughness / 2;
-
-            damage = damage - blocked < 0 ? 0 : damage - blocked;
+            damage = damage - result.blocked < 0 ? 0 : damage - result.blocked;
             CurrentHealth -= damage;
 
             if (CurrentHealth <= 0) Alive = false;
 
-            DramaticPrint($"{Name} {(blocked == Toughness ? "expertly blocks" : "stumbles but manages to block")} {blocked} damage");
+            DramaticPrint($"{Name} {result.msg} {result.blocked} damage");
             Console.WriteLine($"{Name} takes {damage} points of damage ({CurrentHealth}/{MaxHealth})");
             Console.WriteLine();
 
             return Alive;
         }
+        private (string, int) DoRoll(bool attacking,int skillToCheck, int associatedValue)
+        {
+            string[] flavourText = attacking ? msg.Hits : msg.Blocks;
+            (string message, int value) result;
+
+            int roll = rng.Next(1, 21);
+
+            if (roll <= skillToCheck)
+            {
+                if (roll == 1) result.value = associatedValue * 2;
+                else result.value = associatedValue;
+                result.message = result.value == associatedValue ? flavourText[0] : flavourText[1];
+            }
+            else
+            {
+                if (roll == 20) result.value = 0;
+                else result.value = associatedValue / 2;
+                result.message = result.value == 0 ? flavourText[3] :flavourText[2];
+            }
+            return result;
+        }
 
         public virtual int Attack()
         {
-            int dmg = 0;
-            if (rng.Next(1, 21) <= Offense) dmg = Damage / 2;
-            else dmg = Damage;
-            DramaticPrint($"{Name} {(dmg == Damage ? "hits true for" : "whiffs for")} {dmg} points of damage");
-            return dmg;
+            (string flavourText, int damage) result = DoRoll(true, Offense, Damage);
+            DramaticPrint($"{Name} {result.flavourText} {result.damage} points of damage");
+            return result.damage;
         }
         protected virtual void DramaticPrint(string msg)
         {
@@ -61,7 +82,7 @@ namespace Uppgift3_TheGame
             for (int i = 0; i < 5; i++)
             {
                 Console.Write(".");
-                Thread.Sleep(300);
+                Thread.Sleep(100);
             }
             Console.WriteLine();
         }
