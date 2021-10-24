@@ -35,10 +35,10 @@ namespace Uppgift3_TheGame
             Damage = 10 + (newLevel * 5) + EquippedWeapon.Damage;
             Toughness = 10 + (newLevel * 5) + (int)EquippedArmor;
         }
-        public void Loot(Monster mob)
+        public void Loot((int gold,int xp) loot)
         {
-            Gold += mob.Gold;
-            Xp += mob.XpValue;
+            Gold += loot.gold;
+            Xp += loot.xp;
             if (Xp >= XpToNextLevel) LevelUp(Level++);
         }
         public void EquipWeapon(Weapon weapon)
@@ -51,6 +51,14 @@ namespace Uppgift3_TheGame
         {
             EquippedArmor = armor;
             Toughness = 10 + Level * 5 + (int)EquippedArmor;
+        }
+        public int Purse()
+        {
+            return Gold;
+        }
+        public void Pay(int price)
+        {
+            Gold -= price;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Uppgift3_TheGame
+﻿using System;
+
+namespace Uppgift3_TheGame
 {
     public class Monster : Character
     {
@@ -16,6 +18,12 @@
             CurrentHealth = MaxHealth;
             Gold = rng.Next(1, 11) * powerUp;
             XpValue = powerUp;
+        }
+
+        public (int gold,int xp) Corpse()
+        {
+            (int gold, int xp) loot = (Gold, XpValue);
+            return loot;
         }
     }
 }
