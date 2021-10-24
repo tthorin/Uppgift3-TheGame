@@ -2,20 +2,26 @@
 namespace Uppgift3_TheGame
 {   
     using Enums;
+    using POCO;
+    using static POCO.Equipment;
     
     public class Player : Character
     {
         public int Level { get; set; } = 0;
         public int Xp { get; set; } = 0;
         public int XpToNextLevel { get; private set; } = 1;
-        public Weapon Weapon { get; set; } = Weapon.Dagger;
-        public Armor Armor { get; set; } = Armor.BirthdaySuit;
+        public Weapon EquippedWeapon { get; private set; } = Fists;
+        public Armor EquippedArmor { get; private set; } = Armor.BirthdaySuit;
 
 
 
         public Player()
         {
+            Alias = "You";
             LevelUp(++Level);
+            CurrentHealth -= 50;
+            Gold += 1000;
+            EquipWeapon(Stick);
         }
 
         private void LevelUp(int newLevel)
@@ -26,14 +32,25 @@ namespace Uppgift3_TheGame
             Defense++;
             MaxHealth += 50;
             CurrentHealth = MaxHealth;
-            Damage = 10 + (newLevel * 5) + (int)Weapon;
-            Toughness = 10 + (newLevel * 5) + (int)Armor;
+            Damage = 10 + (newLevel * 5) + EquippedWeapon.Damage;
+            Toughness = 10 + (newLevel * 5) + (int)EquippedArmor;
         }
         public void Loot(Monster mob)
         {
             Gold += mob.Gold;
             Xp += mob.XpValue;
             if (Xp >= XpToNextLevel) LevelUp(Level++);
+        }
+        public void EquipWeapon(Weapon weapon)
+        {
+            EquippedWeapon = weapon;
+            Damage = 10 + Level * 5 + weapon.Damage;
+            msg.Hits = weapon.FlavourTexts;
+        }
+        public void EquipArmor(Armor armor)
+        {
+            EquippedArmor = armor;
+            Toughness = 10 + Level * 5 + (int)EquippedArmor;
         }
     }
 }

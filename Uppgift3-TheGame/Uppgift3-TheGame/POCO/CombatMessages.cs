@@ -1,13 +1,13 @@
-﻿namespace Uppgift3_TheGame.DTO
+﻿namespace Uppgift3_TheGame.POCO
 {
     public class CombatMessages
     {   
         public string[] Blocks = new string[]
         {
-            "skillfully blocks",
-            "critically blocks",
+            "skillfully block",
+            "critically block",
             "stumbles but manages to block",
-            "trips over its own feets and blocks"
+            "trips over its own feets and block"
         };
         public string[] Hits = new string[]
         {

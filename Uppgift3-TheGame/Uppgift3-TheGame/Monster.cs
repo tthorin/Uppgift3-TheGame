@@ -3,9 +3,11 @@
     public class Monster : Character
     {
         public int XpValue { get; set; }
+        public override string Alias { get => Name;  }
 
         public Monster(int powerUp)
-        {   
+        {
+            Alias = Name;
             Offense += powerUp /2;
             Defense += powerUp /2;
             Damage += powerUp * 2;

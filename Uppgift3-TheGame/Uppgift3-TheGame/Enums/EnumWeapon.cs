@@ -1,6 +1,6 @@
 ﻿namespace Uppgift3_TheGame.Enums
 {
-    public enum Weapon
+    public enum EnumWeapon
     {
         Fists,
         Stick = 5,

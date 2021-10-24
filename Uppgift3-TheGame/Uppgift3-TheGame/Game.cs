@@ -4,19 +4,25 @@ namespace Uppgift3_TheGame
 {
     internal class Game
     {
-        Player player = new() { Name = "Nisse" };
+        public Player player = new() { Name = "Nisse" };
 
 
         internal void Start()
         {
             int counter = (int)'A';
             char monsterNameAddon;
+
+            Town cave = new() { Name = "Cave" };
+            cave.VisitWeaponStore(player);
+            cave.VisitInn(player);
+
+
             while (player.Level < 3)
             {
                 monsterNameAddon = (char)counter;
                 Monster mob = null;
                 string monsterName = "Monster" + monsterNameAddon;
-                mob = new(player.Level) { Name = monsterName };
+                mob = new(player.Level) { Name = monsterName, Alias = monsterName };
                 int round = 1;
                 while (player.Alive && mob.Alive)
                 {

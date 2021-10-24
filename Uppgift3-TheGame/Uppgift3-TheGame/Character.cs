@@ -3,13 +3,14 @@
 namespace Uppgift3_TheGame
 {
     using System;
-    using System.Threading;
-    using DTO;
+    using POCO;
+    using static Helpers.PrintHelper;
 
     public class Character
     {
-        CombatMessages msg = new();
+        protected CombatMessages msg = new();
         public string Name { get; set; } = "";
+        public virtual string Alias { get; set; } = "";
         public int MaxHealth { get; set; } = 100;
         public int CurrentHealth { get; set; } = 0;
         public int Offense { get; set; } = 10;
@@ -41,8 +42,8 @@ namespace Uppgift3_TheGame
 
             if (CurrentHealth <= 0) Alive = false;
 
-            DramaticPrint($"{Name} {result.msg} {result.blocked} damage");
-            Console.WriteLine($"{Name} takes {damage} points of damage ({CurrentHealth}/{MaxHealth})");
+            DramaticPrint($"{Alias} {result.msg} {result.blocked} damage");
+            Console.WriteLine($"{Alias} takes {damage} points of damage ({CurrentHealth}/{MaxHealth})");
             Console.WriteLine();
 
             return Alive;
@@ -72,20 +73,10 @@ namespace Uppgift3_TheGame
         public virtual int Attack()
         {
             (string flavourText, int damage) result = DoRoll(true, Offense, Damage);
-            DramaticPrint($"{Name} {result.flavourText} {result.damage} points of damage");
+            DramaticPrint($"{Alias} {result.flavourText} {result.damage} points of damage");
             return result.damage;
         }
-        protected virtual void DramaticPrint(string msg)
-        {
-            Console.CursorVisible = false;
-            Console.Write(msg);
-            for (int i = 0; i < 5; i++)
-            {
-                Console.Write(".");
-                Thread.Sleep(100);
-            }
-            Console.WriteLine();
-        }
+        
 
     }
 }
