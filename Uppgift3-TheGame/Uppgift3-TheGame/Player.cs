@@ -3,6 +3,7 @@ namespace Uppgift3_TheGame
 {   
     using POCO;
     using static POCO.Equipment;
+    using static Helpers.PrintHelpers;
     
     public class Player : Character
     {
@@ -38,6 +39,9 @@ namespace Uppgift3_TheGame
         {
             Gold += loot.gold;
             Xp += loot.xp;
+            System.Console.WriteLine($"You gain {loot.xp} XP and {loot.gold} gold.");
+            System.Console.WriteLine($"You are level {Level}, have {Xp} XP out of {XpToNextLevel} needed for next level and {Gold} gold.");
+            Hold();
             if (Xp >= XpToNextLevel) LevelUp(Level++);
         }
         public void EquipWeapon(Weapon weapon)

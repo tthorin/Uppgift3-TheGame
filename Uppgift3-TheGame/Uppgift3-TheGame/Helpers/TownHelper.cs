@@ -7,6 +7,7 @@ namespace Uppgift3_TheGame.POCO
 {
     using System.Collections.Generic;
     using static POCO.Equipment;
+    using static Helpers.PrintHelpers;
 
     internal static class TownHelper
     {
@@ -35,8 +36,8 @@ namespace Uppgift3_TheGame.POCO
                 $"Armor: {visitor.EquippedArmor.Name}",
                 "Visit the inn.",
                 "Visit the equipment store.",
-                "Exit game.",
-                "Head out on new adventures."
+                "Head out on new adventures.",
+                "Exit game."
             };
             return new Menu(tmm, 3, 3);
         }
@@ -56,7 +57,21 @@ namespace Uppgift3_TheGame.POCO
             return new Menu(aShopList, 2, 3);
         }
 
-
+        internal static Menu InnMenu(Player player,int price)
+        {
+            List<string> innList = new()
+            {
+                "Welcome to the inn!",
+                "Would you like to stay the night?",
+                $"Current health : {player.CurrentHealth} / {player.MaxHealth}",
+                $"You have {player.Gold} gold.",
+                $"Rest until fully healed - {price} gold",
+                "Leave"
+            };
+            Menu inn = new(innList, 2, 2);
+            return inn;
+        }
+        
 
 
     }

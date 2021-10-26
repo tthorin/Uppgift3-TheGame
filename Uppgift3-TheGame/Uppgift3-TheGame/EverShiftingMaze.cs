@@ -4,6 +4,7 @@ namespace Uppgift3_TheGame
     using System;
     using System.Collections.Generic;
     using Enums;
+    using static Helpers.PrintHelpers;
     
     internal static class EverShiftingMaze
     {
@@ -23,7 +24,7 @@ namespace Uppgift3_TheGame
                 "Is this the right way?",
                 "You know just where you are."
             };
-            List<string> roomList = new() { "The Evershifting Maze", $"{roomDescriptions[rng.Next(0, roomDescriptions.Length)]}" };
+            List<string> roomList = new() { "The Evershifting Maze,", $"{roomDescriptions[rng.Next(0, roomDescriptions.Length)]}" };
             roomList.Add($"Level: {pc.Level} Xp: {pc.Xp} / {pc.XpToNextLevel}");
             roomList.Add($"Current health: {pc.CurrentHealth} / {pc.MaxHealth}");
             roomList.Add("");
@@ -58,6 +59,15 @@ namespace Uppgift3_TheGame
             };
             Menu encounterMenu = new Menu(encounterList, 1, 2);
             return encounterMenu;
+        }
+        internal static void PortalStone()
+        {
+            string[] portalStone =
+                    {
+                        "A shimmering portal appears before you as you activate your portal stone.",
+                        "You step trough and find yourself back in \"town\"."
+                    };
+            BorderPrint(portalStone);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Uppgift3_TheGame
 {
     using System;
     using POCO;
-    using static Helpers.PrintHelper;
+    using static Helpers.PrintHelpers;
 
     public class Character
     {
@@ -24,7 +24,7 @@ namespace Uppgift3_TheGame
         public bool Alive { get; set; } = true;
 
 
-        protected static 
+        protected static
             Random rng = new();
 
 
@@ -44,11 +44,15 @@ namespace Uppgift3_TheGame
             damage = damage - result.blocked < 0 ? 0 : damage - result.blocked;
             CurrentHealth -= damage;
 
-            if (CurrentHealth <= 0) Alive = false;
-
             DramaticPrint($"{Alias} {result.msg} {result.blocked} damage");
             Console.WriteLine($"{Alias} takes {damage} points of damage ({CurrentHealth}/{MaxHealth})");
             Console.WriteLine();
+
+            if (CurrentHealth <= 0)
+            {
+                Alive = false;
+                Die();
+            }
 
             return Alive;
         }
@@ -79,6 +83,10 @@ namespace Uppgift3_TheGame
             (string flavourText, int damage) result = DoRoll(true, Offense, Damage);
             DramaticPrint($"{Alias} {result.flavourText} {result.damage} points of damage");
             return result.damage;
+        }
+        public virtual void Die()
+        {
+            BorderPrint($"{Name} falls over, dead.");
         }
 
 

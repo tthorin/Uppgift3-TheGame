@@ -8,7 +8,7 @@ namespace Uppgift3_TheGame
     using System;
     using System.Collections.Generic;
     using POCO;
-    using static Helpers.PrintHelper;
+    using static Helpers.PrintHelpers;
 
     public class Town
     {
@@ -49,19 +49,17 @@ namespace Uppgift3_TheGame
         private void VisitInn()
         {
             int price = (int)(5 + (5 * Visitor.Level * priceMarkUp));
-            List<string> innList = new() { "Welcome to the inn!", "Would you like to stay the night?", $"Current health : {Visitor.CurrentHealth} / {Visitor.MaxHealth}", $"You have {Visitor.Gold} gp.", $"Rest until fully healed - {price} gp", "Leave" };
-            Menu inn = new(innList, 2, 2);
+            Menu inn = TownHelper.InnMenu(Visitor, price);
             string choice = inn.UseMenu();
             if (choice.StartsWith("Rest"))
-            {
-                bool canAfford = CanAfford(price);
-                if (canAfford)
+            {   
+                if (CanAfford(price))
                 {
                     Visitor.CurrentHealth = Visitor.MaxHealth;
+                    Visitor.Pay(price);
                     BorderPrint("You feel well rested and fully healed after a night at the inn.");
                 }
             }
-            Console.WriteLine();
         }
 
         private void VisitEquipmentStore()

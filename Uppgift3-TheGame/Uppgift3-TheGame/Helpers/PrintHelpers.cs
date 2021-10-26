@@ -8,7 +8,7 @@ namespace Uppgift3_TheGame.Helpers
     using System;
     using System.Threading;
 
-    public static class PrintHelper
+    public static class PrintHelpers
     {
         public static void DramaticPrint(string msg)
         {
@@ -17,7 +17,7 @@ namespace Uppgift3_TheGame.Helpers
             for (int i = 0; i < 5; i++)
             {
                 Console.Write(".");
-                Thread.Sleep(200);
+                Thread.Sleep(50);
             }
             Console.WriteLine();
         }
