@@ -11,7 +11,7 @@ namespace Uppgift3_TheGame
 
     public class Town
     {
-        public Player Visitor { get; private set; }
+        private Player Visitor { get; set; }
 
         public string Name { get; set; } = "";
 
@@ -25,13 +25,13 @@ namespace Uppgift3_TheGame
             {
                 Menu townmenu = TownMenus.TownMainMenu(this.Name, Visitor);
                 string choice = townmenu.UseMenu();
-                if (choice == "Visit Inn.") VisitInn();
-                else if (choice == "Visit Weapon store.") VisitWeaponStore();
+                if (choice == "Visit the inn.") VisitInn();
+                else if (choice == "Visit the equipment store.") VisitEquipmentStore();
                 else leaving = true;
             } while (!leaving);
         }
 
-        public void VisitInn()
+        private void VisitInn()
         {
             int price = (int)(5 + (5 * Visitor.Level * priceMarkUp));
             List<string> innList = new() { "Welcome to the inn!", "Would you like to stay the night?", $"Current health : {Visitor.CurrentHealth} / {Visitor.MaxHealth}", $"You have {Visitor.Gold} gp.", $"Rest until fully healed - {price} gp", "Leave" };
@@ -44,39 +44,62 @@ namespace Uppgift3_TheGame
             }
             Console.WriteLine();
         }
-
-        public void VisitWeaponStore()
+        
+        private void VisitEquipmentStore()
         {
-            Menu weaponStore = TownMenus.GenerateWeaponShop(priceMarkUp, Visitor.EquippedWeapon, Visitor.Purse());
+            Menu equipStore = TownMenus.GenerateEquipmentShop(priceMarkUp, Visitor.EquippedWeapon, Visitor.EquippedArmor, Visitor.Purse());
             bool leaving = false;
-            Weapon buying = Equipment.Fists;
-            bool canAfford = false;
 
             do
             {
-                string choice = weaponStore.UseMenu();
+                string choice = equipStore.UseMenu();
                 if (choice == "Leave.") leaving = true;
-                else buying = Equipment.WeaponsList.Find(weapon => weapon.Name.StartsWith(choice.Substring(0, choice.IndexOf('-') - 1)));
-                if (!leaving && buying.Damage <= Visitor.EquippedWeapon.Damage) BorderPrint("You already have the same or better weapon!");
-                else if (!leaving) canAfford = CheckMoney((int)(buying.Price * priceMarkUp));
-            } while (!leaving && !canAfford);
+                if (!leaving)
+                {
+                    string buyString = choice.Substring(0, choice.IndexOf('-') - 1);
+                    var buying = Equipment.EquipmentList.Find(item => item.Name == buyString);
+                    bool canAfford = CheckMoney((int)(buying.Price * priceMarkUp));
+                    if (canAfford && buying is Armor buyingArmor)
+                    {
+                        BuyItem(buyingArmor);
+                    }
+                    if (canAfford && buying is Weapon buyingWeapon)
+                    {
+                        BuyItem(buyingWeapon);
+                    }
 
-            if (canAfford)
+                    equipStore.UpdateMenuItem($"Your current weapon is: {Visitor.EquippedWeapon.Name}", 2);
+                    equipStore.UpdateMenuItem($"Your current armor is: {Visitor.EquippedArmor.Name}", 3);
+                    equipStore.UpdateMenuItem($"You have {Visitor.Gold} gold coins in your purse.", 4);
+                }
+
+            } while (!leaving);
+        }
+
+        private void BuyItem(Weapon item)
+        {
+            if (item.Damage <= Visitor.EquippedWeapon.Damage) BorderPrint("You already have the same or better item!");
+            else
             {
-                BorderPrint($"You bought a {buying.Name}.");
-                Visitor.EquipWeapon(buying);
+                Visitor.EquipWeapon(item);
+                Visitor.Pay((int)(item.Price * priceMarkUp));
+            }
+        }
+
+        private void BuyItem(Armor item)
+        {
+            if (item.Protection <= Visitor.EquippedArmor.Protection) BorderPrint("You already have the same or better item!");
+            else
+            {
+                Visitor.EquipArmor(item);
+                Visitor.Pay((int)(item.Price * priceMarkUp));
             }
         }
 
         private bool CheckMoney(int price)
         {
             bool canAfford = false;
-            if (price <= Visitor.Purse())
-            {
-                canAfford = true;
-                Visitor.Pay(price);
-            }
-
+            if (price <= Visitor.Purse()) canAfford = true;
             else PrintAndHold("You can't afford that! :(");
             return canAfford;
         }

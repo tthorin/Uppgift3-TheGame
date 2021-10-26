@@ -1,7 +1,6 @@
 ﻿
 namespace Uppgift3_TheGame
 {   
-    using Enums;
     using POCO;
     using static POCO.Equipment;
     
@@ -11,7 +10,7 @@ namespace Uppgift3_TheGame
         public int Xp { get; set; } = 0;
         public int XpToNextLevel { get; private set; } = 1;
         public Weapon EquippedWeapon { get; private set; } = Fists;
-        public Armor EquippedArmor { get; private set; } = Armor.BirthdaySuit;
+        internal Armor EquippedArmor { get; private set; } = BirthdaySuit;
 
 
 
@@ -33,7 +32,7 @@ namespace Uppgift3_TheGame
             MaxHealth += 50;
             CurrentHealth = MaxHealth;
             Damage = 10 + (newLevel * 5) + EquippedWeapon.Damage;
-            Toughness = 10 + (newLevel * 5) + (int)EquippedArmor;
+            Toughness = 10 + (newLevel * 5) + EquippedArmor.Protection;
         }
         public void Loot((int gold,int xp) loot)
         {
@@ -47,10 +46,10 @@ namespace Uppgift3_TheGame
             Damage = 10 + Level * 5 + weapon.Damage;
             msg.Hits = weapon.FlavourTexts;
         }
-        public void EquipArmor(Armor armor)
+        internal void EquipArmor(Armor armor)
         {
             EquippedArmor = armor;
-            Toughness = 10 + Level * 5 + (int)EquippedArmor;
+            Toughness = 10 + Level * 5 + armor.Protection;
         }
         public int Purse()
         {

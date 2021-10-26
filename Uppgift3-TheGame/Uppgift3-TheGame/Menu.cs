@@ -1,6 +1,5 @@
 ﻿namespace Uppgift3_TheGame
-{
-    //using Helpers;
+{   
     using System;
     using System.Collections.Generic;
 
@@ -10,8 +9,8 @@
         #region Private Fields
 
         private string bottomLine = "";
-        private ConsoleColor currentBackground = Console.BackgroundColor;
-        private ConsoleColor currentForeground = Console.ForegroundColor;
+        static private ConsoleColor currentBackground = Console.BackgroundColor;
+        static private ConsoleColor currentForeground = Console.ForegroundColor;
         private int headerLines = 0;
         private string HelpText = " Arrow keys to navigate, Enter to select.";
         private int infoLines = 0;
@@ -25,17 +24,17 @@
 
         public Menu(List<string> menuItems, int headerLines)
         {
-            SetupMenu(menuItems, headerLines, 0);
+            SetupMenu(this, menuItems, headerLines, 0);
         }
 
         public Menu(List<string> menuItems, int headerLines, int infoLines)
         {
-            SetupMenu(menuItems, headerLines, infoLines);
+            SetupMenu(this, menuItems, headerLines, infoLines);
         }
 
         public Menu(List<string> menuItems)
         {
-            SetupMenu(menuItems, 1, 0);
+            SetupMenu(this,menuItems, 1, 0);
         }
 
         #endregion Public Constructors
@@ -59,22 +58,22 @@
         public void UpdateMenuItem(string update, int index)
         {
             MenuItems[index] = update;
-            SetupPrintables();
+            SetupPrintables(this);
         }
 
         public string UseMenu()
         {
             if (MenuItems.Count == 0) MenuItems.Add("Auto added item because of empy menu, check your code.");
-            return DoMenu();
+            return DoMenu(this);
         }
 
         #endregion Public Methods
 
         #region Private Methods
 
-        private string DoMenu()
+        private static string DoMenu(Menu menu)
         {
-            int highlightItem = StartSelected;
+            int highlightItem = menu.StartSelected;
             string userChoice = "";
             ConsoleKeyInfo input = new();
 
@@ -83,22 +82,22 @@
 
             do
             {
-                UpdateMenu(highlightItem);
+                UpdateMenu(menu, highlightItem);
                 input = Console.ReadKey(true);
                 switch (input.Key)
                 {
                     case ConsoleKey.LeftArrow or ConsoleKey.UpArrow:
-                        if (highlightItem == StartSelected) highlightItem = MenuItems.Count - 1;
+                        if (highlightItem == menu.StartSelected) highlightItem = menu.MenuItems.Count - 1;
                         else highlightItem--;
                         break;
 
                     case ConsoleKey.RightArrow or ConsoleKey.DownArrow:
-                        if (highlightItem == MenuItems.Count - 1) highlightItem = StartSelected;
+                        if (highlightItem == menu.MenuItems.Count - 1) highlightItem = menu.StartSelected;
                         else highlightItem++;
                         break;
 
                     case ConsoleKey.Enter:
-                        userChoice = MenuItems[highlightItem];
+                        userChoice = menu.MenuItems[highlightItem];
                         break;
 
                     default:
@@ -109,64 +108,64 @@
             Console.Clear();
             return userChoice;
         }
-        private void InvertColors()
+        private static void InvertColors()
         {
             Console.ForegroundColor = currentBackground;
             Console.BackgroundColor = currentForeground;
         }
 
-        private void SetColors()
+        private static void SetColors()
         {
             Console.ForegroundColor = currentForeground;
             Console.BackgroundColor = currentBackground;
         }
 
-        private void SetupMenu(List<string> menuItems, int headerLines, int infoLines)
+        private static void SetupMenu(Menu menu, List<string> menuItems, int headerLines, int infoLines)
         {
-            MenuItems = menuItems;
-            HeaderLines = headerLines;
-            InfoLines = infoLines;
-            SetupPrintables();
+            menu.MenuItems = menuItems;
+            menu.HeaderLines = headerLines;
+            menu.InfoLines = infoLines;
+            SetupPrintables(menu);
         }
 
-        private void SetupPrintables()
+        private static void SetupPrintables(Menu menu)
         {
-            menuwidth = HelpText.Length;
-            foreach (var item in MenuItems)
+            menu.menuwidth = menu.HelpText.Length;
+            foreach (var item in menu.MenuItems)
             {
-                if (item.Length > menuwidth) menuwidth = item.Length;
+                if (item.Length > menu.menuwidth) menu.menuwidth = item.Length;
             }
 
-            topLine = "╔" + new string('═', menuwidth) + "╗";
-            midLine = "╟" + new string('─', menuwidth) + "╢";
-            bottomLine = "╚" + new string('═', menuwidth) + "╝";
+            menu.topLine = "╔" + new string('═', menu.menuwidth) + "╗";
+            menu.midLine = "╟" + new string('─', menu.menuwidth) + "╢";
+            menu.bottomLine = "╚" + new string('═', menu.menuwidth) + "╝";
         }
 
-        private void UpdateMenu(int highlightItem)
+        private static void UpdateMenu(Menu menu, int highlightItem)
         {
             Console.CursorVisible = false;
             Console.SetCursorPosition(0, 0);
 
-            Console.WriteLine(topLine);
+            Console.WriteLine(menu.topLine);
 
-            for (int row = 0; row < MenuItems.Count; row++)
+            for (int row = 0; row < menu.MenuItems.Count; row++)
             {
                 if (row == highlightItem)
                 {
                     Console.Write("║");
                     InvertColors();
-                    Console.Write(MenuItems[row].PadRight(menuwidth));
+                    Console.Write(menu.MenuItems[row].PadRight(menu.menuwidth));
                     SetColors();
                     Console.WriteLine("║");
                 }
                 else
                 {
-                    Console.WriteLine($"║" + MenuItems[row].PadRight(menuwidth) + "║");
-                    if (row == HeaderLines - 1 || row == (HeaderLines + InfoLines) - 1) Console.WriteLine(midLine);
+                    Console.WriteLine($"║" + menu.MenuItems[row].PadRight(menu.menuwidth) + "║");
+                    if (row == menu.HeaderLines - 1 || row == (menu.HeaderLines + menu.InfoLines) - 1) Console.WriteLine(menu.midLine);
                 }
             }
-            Console.WriteLine(bottomLine);
-            Console.WriteLine(HelpText);
+            Console.WriteLine(menu.bottomLine);
+            Console.WriteLine(menu.HelpText);
         }
 
         #endregion Private Methods

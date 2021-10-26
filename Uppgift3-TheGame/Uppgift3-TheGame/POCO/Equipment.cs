@@ -5,11 +5,12 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using Interface;
 
-    static public class Equipment
+    static internal class Equipment
     {
-        
-        static public Weapon Fists = new Weapon
+        #region Weapons
+        static internal Weapon Fists = new Weapon
         {
             Name = "Fists",
             Damage = 0,
@@ -22,7 +23,7 @@
                 "punch a big hole in the air for"
             }
         };
-        static public Weapon Stick = new Weapon
+        static internal Weapon Stick = new Weapon
         {
             Name = "Stick",
             Damage = 5,
@@ -35,7 +36,7 @@
                 "you hit the ground beside the enemy with your stick for a total of"
             }
         };
-        static public Weapon Dagger = new Weapon
+        static internal Weapon Dagger = new Weapon
         {
             Name = "Dagger",
             Damage = 10,
@@ -48,7 +49,7 @@
                 "drop your dagger to the ground, doing"
             }
         };
-        static public Weapon Sword = new Weapon
+        static internal Weapon Sword = new Weapon
         {
             Name = "Sword",
             Damage = 15,
@@ -61,7 +62,7 @@
                 "try to juggle your sword, managing to do"
             }
         };
-        static public Weapon GreatAxe = new Weapon
+        static internal Weapon GreatAxe = new Weapon
         {
             Name = "Great Axe",
             Damage = 20,
@@ -74,19 +75,105 @@
                 "manage to miss your toe with your great axe, inflicting"
             }
         };
-        static public Weapon MagicSword = new Weapon
+        static internal Weapon MagicSword = new Weapon
         {
             Name = "Magic Sword of Doom",
             Damage = 40,
             Price = 500,
             FlavourTexts = new string[4]
             {
-                "swing your sparkling sword and hit, doing",
+                "swing your glowing sword and hit, doing",
                 "strike a migthy blow, your sword crackling with energy, and hit, inflicting",
                 "swing but the light in your sword fades and you hit weakly for",
                 "realize that your sword might have a mind of it's own as it twists in your hand and misses, doing"
             }
         };
-        static public List<Weapon> WeaponsList = new() { Stick, Dagger, Sword, GreatAxe, MagicSword };
+
+        static internal List<Weapon> WeaponsList = new() { Stick, Dagger, Sword, GreatAxe, MagicSword };
+
+        #endregion Weapons
+        #region Armor
+        static internal Armor BirthdaySuit = new Armor
+        {
+            Name = "Birthday suit",
+            Protection = 0,
+            Price = 0,
+            FlavourTexts = new string[4]
+            {
+                "avoid the worst of hit and dodge",
+                "nimbly dodge out of the way and avoid",
+                "stumble but manage to block",
+                "fall on your face and block"
+            }
+        };
+        static internal Armor Cloth = new Armor
+        {
+            Name = "Cloth coverings",
+            Protection = 5,
+            Price = 5,
+            FlavourTexts = new string[4]
+            {
+                "move out of the way and avoid",
+                "tangle the enemys attack with your cloth and blunts its force with",
+                "stumble on a loose piece of cloth but manage to avoid",
+                "realize you shouldn't have wrapped yourself as a mummy when you block"
+            }
+        };
+        static internal Armor Leather = new Armor
+        {
+            Name = "Leather armor",
+            Protection = 10,
+            Price = 50,
+            FlavourTexts = new string[4]
+            {
+                "dodge of the way and avoid",
+                "sigh in relief as your enemys attack scrape along your leathers and you block",
+                "misjudge your enemys speed but manage to avoid",
+                "fall straight into the incoming attack and block"
+            }
+        };
+        static internal Armor Chainmail = new Armor
+        {
+            Name = "Chainmail armor",
+            Protection = 15,
+            Price = 100,
+            FlavourTexts = new string[4]
+            {
+                 "skillfully block",
+                 "critically block",
+                 "stumble but manage to block",
+                 "trip over your own feet and block"
+            }
+        };
+        static internal Armor Plate = new Armor
+        {
+            Name = "Plate armor",
+            Protection = 20,
+            Price = 200,
+            FlavourTexts = new string[4]
+            {
+                 "utilize your plate armor and let it absorb",
+                 "expertly twist out of the way, your plate armor blocking",
+                 "are hindered by the weight of your plate armor but it still blocks",
+                 "are blinded by your helmet, maybe try putting it on the other way? You avoid"
+            }
+        };
+        static internal Armor PowerArmor = new Armor
+        {
+            Name = "Power armor",
+            Protection = 40,
+            Price = 500,
+            FlavourTexts = new string[4]
+            {
+                 "grin as the mystical energies imbued in your armor block",
+                 "laugh at your enemy as a mystic force reaches out and almost halts the incoming attack, blocking",
+                 "stumble but still absorb",
+                 "feel like you want to cry when the mystical energies in your armor winks out and absorbs"
+            }
+        };
+        static internal List<Armor> ArmorList = new() { Cloth,Leather,Chainmail,Plate,PowerArmor };
+        #endregion Armor
+        static internal List<ISellable> EquipmentList = new() { Stick, Dagger, Sword, GreatAxe, MagicSword, Cloth, Leather, Chainmail, Plate, PowerArmor };
+
     }
 }

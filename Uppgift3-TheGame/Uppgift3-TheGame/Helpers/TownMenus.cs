@@ -3,9 +3,9 @@
     using System.Collections.Generic;
     using static POCO.Equipment;
 
-    public class TownMenus
+    internal class TownMenus
     {
-        public static Menu TownMainMenu(string name, Player visitor)
+        internal static Menu TownMainMenu(string name, Player visitor)
         {
             List<string> tmm = new()
             {
@@ -14,26 +14,27 @@
                 "But adventure calls, maybe you should just head out again?",
                 $"Health {visitor.CurrentHealth} / {visitor.MaxHealth}, Gold: {visitor.Purse()}",
                 $"Weapon: {visitor.EquippedWeapon.Name}",
-                $"Armor: {visitor.EquippedWeapon}",
+                $"Armor: {visitor.EquippedArmor.Name}",
                 "Visit the inn.",
-                "Visit the weapon store.",
+                "Visit the equipment store.",
                 "Head out on new adventures."
             };
             return new Menu(tmm, 3, 3);
         }
-
-        public static Menu GenerateWeaponShop(float markUp, Weapon equippedWeapon, int gold)
+        
+        internal static Menu GenerateEquipmentShop(float markUp, Weapon equippedWeapon, Armor equippedArmor, int gold)
         {
-            List<string> wShopList = new() { "Welcome to the weapon store!", "What would you like to buy today?" };
-            wShopList.Add($"Your current weapon is: {equippedWeapon.Name}");
-            wShopList.Add($"You have {gold} gold coins in your purse.");
-            foreach (Weapon weapon in WeaponsList)
+            List<string> aShopList = new() { "Welcome to the armor store!", "What would you like to buy today?" };
+            aShopList.Add($"Your current weapon is: {equippedWeapon.Name}");
+            aShopList.Add($"Your current armor is: {equippedArmor.Name}");
+            aShopList.Add($"You have {gold} gold coins in your purse.");
+            foreach (var item in EquipmentList)
             {
-                wShopList.Add($"{weapon.Name} - {(int)(weapon.Price * markUp)} gold.");
+                aShopList.Add($"{item.Name} - {(int)(item.Price * markUp)} gold.");
             }
-            wShopList.Add("Leave.");
+            aShopList.Add("Leave.");
 
-            return new Menu(wShopList, 2, 2);
+            return new Menu(aShopList, 2, 3);
         }
 
 
