@@ -1,5 +1,10 @@
-﻿namespace Uppgift3_TheGame
-{   
+﻿// -----------------------------------------------------------------------------------------------
+//  Menu.cs by Thomas Thorin, Copyright (C) 2021.
+//  Published under GNU General Public License v3 (GPL-3)
+// -----------------------------------------------------------------------------------------------
+
+namespace Uppgift3_TheGame
+{
     using System;
     using System.Collections.Generic;
 
@@ -9,10 +14,10 @@
         #region Private Fields
 
         private string bottomLine = "";
-        static private ConsoleColor currentBackground = Console.BackgroundColor;
-        static private ConsoleColor currentForeground = Console.ForegroundColor;
+        private static readonly ConsoleColor currentBackground = Console.BackgroundColor;
+        private static readonly ConsoleColor currentForeground = Console.ForegroundColor;
         private int headerLines = 0;
-        private string HelpText = " Arrow keys to navigate, Enter to select.";
+        private readonly string HelpText = " Arrow keys to navigate, Enter to select.";
         private int infoLines = 0;
         private int menuwidth = 0;
         private string midLine = "";
@@ -34,7 +39,7 @@
 
         public Menu(List<string> menuItems)
         {
-            SetupMenu(this,menuItems, 1, 0);
+            SetupMenu(this, menuItems, 1, 0);
         }
 
         #endregion Public Constructors
@@ -49,7 +54,7 @@
 
         private int HeaderLines { get => headerLines; set => headerLines = value >= MenuItems.Count ? 0 : value; }
         private int InfoLines { get => infoLines; set => infoLines = value + HeaderLines >= MenuItems.Count ? 0 : value; }
-        private int StartSelected { get => HeaderLines + InfoLines; }
+        private int StartSelected => HeaderLines + InfoLines;
 
         #endregion Private Properties
 
@@ -131,7 +136,7 @@
         private static void SetupPrintables(Menu menu)
         {
             menu.menuwidth = menu.HelpText.Length;
-            foreach (var item in menu.MenuItems)
+            foreach (string item in menu.MenuItems)
             {
                 if (item.Length > menu.menuwidth) menu.menuwidth = item.Length;
             }

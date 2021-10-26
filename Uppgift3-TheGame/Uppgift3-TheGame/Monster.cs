@@ -9,7 +9,7 @@ namespace Uppgift3_TheGame
 
         public Monster(int powerUp)
         {
-            Alias = Name;
+            Name = "Pelle";
             Offense += powerUp /2;
             Defense += powerUp /2;
             Damage += powerUp * 2;

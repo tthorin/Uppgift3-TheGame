@@ -1,4 +1,7 @@
-﻿
+﻿// -----------------------------------------------------------------------------------------------
+//  Character.cs by Thomas Thorin, Copyright (C) 2021.
+//  Published under GNU General Public License v3 (GPL-3)
+// -----------------------------------------------------------------------------------------------
 
 namespace Uppgift3_TheGame
 {
@@ -21,7 +24,8 @@ namespace Uppgift3_TheGame
         public bool Alive { get; set; } = true;
 
 
-        protected Random rng = new();
+        protected static 
+            Random rng = new();
 
 
         public Character()
@@ -34,7 +38,7 @@ namespace Uppgift3_TheGame
             Toughness = 10;
         }
         public virtual bool TakeDamage(int damage)
-        {   
+        {
             (string msg, int blocked) result = DoRoll(false, Defense, Toughness);
 
             damage = damage - result.blocked < 0 ? 0 : damage - result.blocked;
@@ -48,12 +52,12 @@ namespace Uppgift3_TheGame
 
             return Alive;
         }
-        private (string, int) DoRoll(bool attacking,int skillToCheck, int associatedValue)
+        private (string, int) DoRoll(bool attacking, int skillToCheck, int associatedValue)
         {
-            string[] flavourText = attacking ? msg.Hits : msg.Blocks;
+            var flavourText = attacking ? msg.Hits : msg.Blocks;
             (string message, int value) result;
 
-            int roll = rng.Next(1, 21);
+            var roll = rng.Next(1, 21);
 
             if (roll <= skillToCheck)
             {
@@ -65,7 +69,7 @@ namespace Uppgift3_TheGame
             {
                 if (roll == 20) result.value = 0;
                 else result.value = associatedValue / 2;
-                result.message = result.value == 0 ? flavourText[3] :flavourText[2];
+                result.message = result.value == 0 ? flavourText[3] : flavourText[2];
             }
             return result;
         }
@@ -76,7 +80,7 @@ namespace Uppgift3_TheGame
             DramaticPrint($"{Alias} {result.flavourText} {result.damage} points of damage");
             return result.damage;
         }
-        
+
 
     }
 }

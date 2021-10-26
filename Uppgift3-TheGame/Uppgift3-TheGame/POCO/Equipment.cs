@@ -86,7 +86,7 @@
                 "strike a migthy blow, your sword crackling with energy, and hit, inflicting",
                 "swing but the light in your sword fades and you hit weakly for",
                 "realize that your sword might have a mind of it's own as it twists in your hand and misses, doing"
-            }
+            },
         };
 
         static internal List<Weapon> WeaponsList = new() { Stick, Dagger, Sword, GreatAxe, MagicSword };
