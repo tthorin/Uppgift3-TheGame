@@ -14,7 +14,7 @@ namespace Uppgift3_TheGame.POCO
         internal static string[] LeaveTownDesc =
         {
             "You head out of town into the Evershifting Maze,",
-            "the mystical, magical domain that surronds your",
+            "the mystical, magical domain that surrounds your",
             "masters lair. Your task is to hunt down and kill",
             "invading so-called heroes who's always poking around",
             "and trying to kill all the \"innocent\" minions and",
@@ -34,9 +34,10 @@ namespace Uppgift3_TheGame.POCO
                 $"Health {visitor.CurrentHealth} / {visitor.MaxHealth}, Gold: {visitor.Purse()}",
                 $"Weapon: {visitor.EquippedWeapon.Name}",
                 $"Armor: {visitor.EquippedArmor.Name}",
+                "Head out on new adventures.",
+                "Show player stats.",
                 "Visit the inn.",
                 "Visit the equipment store.",
-                "Head out on new adventures.",
                 "Exit game."
             };
             return new Menu(tmm, 3, 3);
@@ -57,7 +58,7 @@ namespace Uppgift3_TheGame.POCO
             return new Menu(aShopList, 2, 3);
         }
 
-        internal static Menu InnMenu(Player player,int price)
+        internal static Menu InnMenu(Player player, int price)
         {
             List<string> innList = new()
             {
@@ -71,7 +72,7 @@ namespace Uppgift3_TheGame.POCO
             Menu inn = new(innList, 2, 2);
             return inn;
         }
-        
+
 
 
     }

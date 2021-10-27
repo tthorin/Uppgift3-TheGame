@@ -46,6 +46,7 @@ namespace Uppgift3_TheGame
             } while (!validRoom || exitList.Count < 2);
             roomList.AddRange(exitList);
 
+            roomList.Add("Show player stats.");
             roomList.Add("Head back to town.");
 
             Menu room = new Menu(roomList, 2, 3);
@@ -67,7 +68,7 @@ namespace Uppgift3_TheGame
             List<string> encounterList = new()
             {
                 "Encounter!",
-                $"You have encountered a {mob.Alias}.",
+                $"You have encountered a {mob.FullName}.",
                 $"Your health: {pc.CurrentHealth} / {pc.MaxHealth}",
                 "Fight!",
                 "Flee!"
@@ -84,5 +85,23 @@ namespace Uppgift3_TheGame
                     };
             BorderPrint(portalStone);
         }
+        public static string Intro()
+        {
+            string[] intro =
+            {
+                "You, the hero of our story are currently standing in a dark cavern.",
+                "Well, when I say \"hero\" what I actually mean is, let's be honest",
+                "about it.... \"MONSTER\"! You are hired by the resident Dungeon Lord",
+                "to track down and \"expel\" troublesome heroes and other do-gooders who",
+                "come poking around, aswell as keeping the local, feral, monster poulation",
+                "under control.",
+                "",
+                "As our story begin, what would you like to be called?"
+            };
+            BorderPrint(intro, false);
+            Console.Write("Name: ");
+            return Console.ReadLine().Trim();
+        }
+
     }
 }

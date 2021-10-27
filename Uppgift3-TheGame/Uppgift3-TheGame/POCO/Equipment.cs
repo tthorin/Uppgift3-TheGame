@@ -31,7 +31,7 @@
             FlavourTexts = new string[4]
             {
                 "thwack the enemy with your stick for",
-                "poke the enemy in the eye with your stick, hurtfully doing",
+                "poke the enemy in the eye with your stick, painfully doing",
                 "poke the enemy ineffectually with you stick, scratching it for",
                 "hit the ground beside the enemy with your stick for a total of"
             }
@@ -100,7 +100,7 @@
             Price = 0,
             FlavourTexts = new string[4]
             {
-                "avoid the worst of hit and dodge",
+                "avoid the worst of the hit and dodge",
                 "nimbly dodge out of the way and avoid",
                 "stumble but manage to block",
                 "fall on your face and block"

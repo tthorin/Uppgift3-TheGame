@@ -1,27 +1,30 @@
-﻿
+﻿// -----------------------------------------------------------------------------------------------
+//  Player.cs by Thomas Thorin, Copyright (C) 2021.
+//  Published under GNU General Public License v3 (GPL-3)
+// -----------------------------------------------------------------------------------------------
+
 namespace Uppgift3_TheGame
-{   
-    using POCO;
-    using static POCO.Equipment;
-    using static Helpers.PrintHelpers;
+{
     using System;
+    using POCO;
+    using static Helpers.PrintHelpers;
+    using static POCO.Equipment;
 
     public class Player : Character
     {
-        public int Level { get; set; } = 0;
-        public int Xp { get; set; } = 0;
+        public int Level { get; private set; } = 0;
+        public int Xp { get; private set; } = 0;
+        public override string Alias { get => "You";}
         public double XpToNextLevel { get; private set; } = 1;
         public Weapon EquippedWeapon { get; private set; } = Fists;
         internal Armor EquippedArmor { get; private set; } = BirthdaySuit;
-
-        //todo: adjust starting stats
-        //todo: function to display player stats
+        
         public Player()
-        {
-            Alias = "You";
+        {   
             LevelUp(++Level);
-            EquipWeapon(Fists);
-            EquipArmor(BirthdaySuit);
+            CurrentHealth = MaxHealth;
+            msg.Hits = EquippedWeapon.FlavourTexts;
+            msg.Blocks = EquippedArmor.FlavourTexts;
         }
 
         private void LevelUp(int newLevel)
@@ -31,18 +34,17 @@ namespace Uppgift3_TheGame
             Offense++;
             Defense++;
             MaxHealth += 50;
-            CurrentHealth = MaxHealth;
             Damage = 10 + (newLevel * 5) + EquippedWeapon.Damage;
-            Toughness = 10 + (newLevel * 5) + EquippedArmor.Protection;
+            Toughness = 10 + (newLevel * 4) + EquippedArmor.Protection;
         }
-        public void Loot((int gold,int xp) loot)
+        public void Loot((int gold, int xp) loot)
         {
             Gold += loot.gold;
             Xp += loot.xp;
             System.Console.WriteLine($"\nYou gain {loot.xp} XP and {loot.gold} gold. Current health: {CurrentHealth} / {MaxHealth} HP.");
             ThinBorderPrint($"You are level {Level}, have {Xp} XP out of {XpToNextLevel} needed for next level and {Gold} gold.");
-            
-            if (Xp >= XpToNextLevel) LevelUp(Level++);
+
+            if (Xp >= XpToNextLevel) LevelUp(++Level);
         }
         public void EquipWeapon(Weapon weapon)
         {
@@ -63,6 +65,20 @@ namespace Uppgift3_TheGame
         public void Pay(int price)
         {
             Gold -= price;
+        }
+        public void ShowStats()
+        {
+            string[] stats =
+            {
+                $"Name:".PadRight(8)+$"{Name,25}",
+                $"Level:".PadRight(8)+$"{Level,25}",
+                "XP:".PadRight(8)+$"{Xp} / {XpToNextLevel}".PadLeft(25),
+                "Health:".PadRight(8)+$"{CurrentHealth} / {MaxHealth}".PadLeft(25),
+                $"Gold:".PadRight(8)+$"{Gold,25}",
+                $"Weapon:".PadRight(8)+$"{EquippedWeapon.Name,25}",
+                $"Armor:".PadRight(8)+$"{EquippedArmor.Name,25}"
+            };
+            BorderPrint(stats);
         }
     }
 }

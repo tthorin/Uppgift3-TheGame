@@ -17,7 +17,7 @@ namespace Uppgift3_TheGame.Helpers
             for (int i = 0; i < 5; i++)
             {
                 Console.Write(".");
-                //Thread.Sleep(50); //todo: adjust speed
+                Thread.Sleep(200); //todo: adjust speed
             }
             Console.WriteLine();
         }
@@ -42,21 +42,24 @@ namespace Uppgift3_TheGame.Helpers
             Console.WriteLine("Press any key to continue.");
             Console.ReadKey(true);
         }
-        public static void BorderPrint(string[] msg)
+        public static void BorderPrint(string[] msg, bool holdAtEnd = true)
         {
             int width = 0;
             foreach (var line in msg)
             {
                 if (line.Length + 2 > width) width = line.Length + 2;
             }
-            Console.WriteLine($"╔{new string('═', width+2)}╗");
+            Console.WriteLine($"╔{new string('═', width + 2)}╗");
             foreach (var line in msg)
             {
                 Console.WriteLine($"║ {line.PadRight(width)} ║");
             }
-            Console.WriteLine($"╚{new string('═', width+2)}╝");
-            Console.WriteLine("Press any key to continue.");
-            Console.ReadKey(true);
+            Console.WriteLine($"╚{new string('═', width + 2)}╝");
+            if (holdAtEnd)
+            {
+                Console.WriteLine("Press any key to continue.");
+                Console.ReadKey(true);
+            }
         }
         public static void ThinBorderPrint(string msg)
         {
@@ -67,7 +70,7 @@ namespace Uppgift3_TheGame.Helpers
             Console.WriteLine("Press any key to continue.");
             Console.ReadKey(true);
         }
-        public static void CombatRoundPrint (int round)
+        public static void CombatRoundPrint(int round)
         {
             //┌┐└┘─┤├
             Console.WriteLine($"           ┌────────┐");

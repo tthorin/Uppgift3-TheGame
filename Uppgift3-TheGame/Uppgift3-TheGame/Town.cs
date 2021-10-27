@@ -28,12 +28,13 @@ namespace Uppgift3_TheGame
                 string choice = townmenu.UseMenu();
                 if (choice == "Visit the inn.") VisitInn();
                 else if (choice == "Visit the equipment store.") VisitEquipmentStore();
+                else if (choice == "Show player stats.") Visitor.ShowStats();
                 else if (choice == "Exit game.")
                 {
                     Menu sure = new Menu(new List<string> { "Exit game", "Are you sure?", "No.", "Yes." }, 1, 1);
                     string exit = sure.UseMenu();
                     if (exit == "Yes.") return false;
-                }   
+                }
                 else leaving = true;
             } while (!leaving);
             LeaveTown();
@@ -44,6 +45,7 @@ namespace Uppgift3_TheGame
         {
             string[] description = TownHelper.LeaveTownDesc;
             BorderPrint(description);
+            Console.Clear();
         }
 
         private void VisitInn()

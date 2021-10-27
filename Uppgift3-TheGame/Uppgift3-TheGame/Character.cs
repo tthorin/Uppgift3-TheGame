@@ -15,28 +15,17 @@ namespace Uppgift3_TheGame
         public string Name { get; set; } = "";
         public virtual string Alias { get; set; } = "";
         public int MaxHealth { get; set; } = 100;
-        public int CurrentHealth { get; set; } = 0;
+        public int CurrentHealth { get; set; } = 100;
         public int Offense { get; set; } = 10;
         public int Defense { get; set; } = 10;
-        public int Damage { get; set; } = 10;
+        public int Damage { get; set; } = 25;
         public int Toughness { get; set; } = 10;
         public int Gold { get; set; } = 0;
         public bool Alive { get; set; } = true;
 
 
-        protected static
-            Random rng = new();
+        protected static Random rng = new();
 
-
-        public Character()
-        {
-            MaxHealth = 100;
-            CurrentHealth = MaxHealth;
-            Offense = 10;
-            Defense = 10;
-            Damage = 20;
-            Toughness = 10;
-        }
         public virtual bool TakeDamage(int damage)
         {
             (string msg, int blocked) result = DoRoll(false, Defense, Toughness);
