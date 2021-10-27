@@ -4,10 +4,10 @@
     {   
         public string[] Blocks = new string[]
         {
-            "skillfully block",
-            "critically block",
+            "skillfully blocks",
+            "critically blocks",
             "stumbles but manages to block",
-            "trips over its own feets and block"
+            "trips over its own feets and blocks"
         };
         public string[] Hits = new string[]
         {

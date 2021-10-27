@@ -8,7 +8,7 @@ namespace Uppgift3_TheGame.Enums
     using System;
     
     [Flags]
-    public enum Directions
+    public enum Direction
     {
         None = 0,
         North = 1,

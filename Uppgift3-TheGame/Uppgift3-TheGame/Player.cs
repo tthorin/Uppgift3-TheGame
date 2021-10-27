@@ -4,29 +4,29 @@ namespace Uppgift3_TheGame
     using POCO;
     using static POCO.Equipment;
     using static Helpers.PrintHelpers;
-    
+    using System;
+
     public class Player : Character
     {
         public int Level { get; set; } = 0;
         public int Xp { get; set; } = 0;
-        public int XpToNextLevel { get; private set; } = 1;
+        public double XpToNextLevel { get; private set; } = 1;
         public Weapon EquippedWeapon { get; private set; } = Fists;
         internal Armor EquippedArmor { get; private set; } = BirthdaySuit;
 
-
-
+        //todo: adjust starting stats
+        //todo: function to display player stats
         public Player()
         {
             Alias = "You";
             LevelUp(++Level);
-            CurrentHealth -= 50;
-            Gold += 1000;
-            EquipWeapon(Stick);
+            EquipWeapon(Fists);
+            EquipArmor(BirthdaySuit);
         }
 
         private void LevelUp(int newLevel)
         {
-            XpToNextLevel *= 2;
+            XpToNextLevel = Math.Ceiling(XpToNextLevel * 1.5);
             Xp = 0;
             Offense++;
             Defense++;
@@ -39,9 +39,9 @@ namespace Uppgift3_TheGame
         {
             Gold += loot.gold;
             Xp += loot.xp;
-            System.Console.WriteLine($"You gain {loot.xp} XP and {loot.gold} gold.");
-            System.Console.WriteLine($"You are level {Level}, have {Xp} XP out of {XpToNextLevel} needed for next level and {Gold} gold.");
-            Hold();
+            System.Console.WriteLine($"\nYou gain {loot.xp} XP and {loot.gold} gold. Current health: {CurrentHealth} / {MaxHealth} HP.");
+            ThinBorderPrint($"You are level {Level}, have {Xp} XP out of {XpToNextLevel} needed for next level and {Gold} gold.");
+            
             if (Xp >= XpToNextLevel) LevelUp(Level++);
         }
         public void EquipWeapon(Weapon weapon)
@@ -54,6 +54,7 @@ namespace Uppgift3_TheGame
         {
             EquippedArmor = armor;
             Toughness = 10 + Level * 5 + armor.Protection;
+            msg.Blocks = armor.FlavourTexts;
         }
         public int Purse()
         {

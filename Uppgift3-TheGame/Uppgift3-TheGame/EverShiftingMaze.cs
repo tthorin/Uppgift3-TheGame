@@ -5,13 +5,17 @@ namespace Uppgift3_TheGame
     using System.Collections.Generic;
     using Enums;
     using static Helpers.PrintHelpers;
-    
+
     internal static class EverShiftingMaze
     {
         private static Random rng = new();
 
-        internal static Menu GetNewRoom(Player pc)
-        {
+        internal static Menu GetNewRoom(Player pc, string lastMove)
+        {   
+            Enum.TryParse(lastMove, out Direction last);
+            Direction mustHave = ReverseDirection(last);
+            bool validRoom = false;
+
             string[] roomDescriptions =
             {
                 "This room looks oddly familiar...",
@@ -25,26 +29,37 @@ namespace Uppgift3_TheGame
                 "You know just where you are."
             };
             List<string> roomList = new() { "The Evershifting Maze,", $"{roomDescriptions[rng.Next(0, roomDescriptions.Length)]}" };
-            roomList.Add($"Level: {pc.Level} Xp: {pc.Xp} / {pc.XpToNextLevel}");
+            roomList.Add($"Level: {pc.Level} Xp: {pc.Xp} / {pc.XpToNextLevel} Gold: {pc.Gold}");
             roomList.Add($"Current health: {pc.CurrentHealth} / {pc.MaxHealth}");
             roomList.Add("");
             List<string> exitList = new();
             do
             {
                 exitList.Clear();
-                Directions exits = (Directions)rng.Next(1, 16);
-                if ((exits & Directions.North) == Directions.North) exitList.Add("Go North.");
-                if ((exits & Directions.East) == Directions.East) exitList.Add("Go East.");
-                if ((exits & Directions.South) == Directions.South) exitList.Add("Go South.");
-                if ((exits & Directions.West) == Directions.West) exitList.Add("Go West.");
+                Direction exits = (Direction)rng.Next(1, 16);
+                if ((exits & Direction.North) == Direction.North) exitList.Add("Go North.");
+                if ((exits & Direction.East) == Direction.East) exitList.Add("Go East.");
+                if ((exits & Direction.South) == Direction.South) exitList.Add("Go South.");
+                if ((exits & Direction.West) == Direction.West) exitList.Add("Go West.");
+                if ((exits & mustHave) == mustHave) validRoom = true;
 
-            } while (exitList.Count <2);
+            } while (!validRoom || exitList.Count < 2);
             roomList.AddRange(exitList);
 
             roomList.Add("Head back to town.");
 
             Menu room = new Menu(roomList, 2, 3);
             return room;
+        }
+
+        private static Direction ReverseDirection(Direction last)
+        {
+            Direction reversed = Direction.None;
+            if (last == Direction.North) reversed = Direction.South;
+            else if (last == Direction.South) reversed = Direction.North;
+            else if (last == Direction.East) reversed = Direction.West;
+            else reversed = Direction.East;
+            return reversed;
         }
 
         internal static Menu EncounterMenu(Player pc, Monster mob)

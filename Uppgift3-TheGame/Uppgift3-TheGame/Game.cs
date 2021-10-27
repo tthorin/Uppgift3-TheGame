@@ -10,19 +10,22 @@ namespace Uppgift3_TheGame
         private static Random rng = new();
         Monster mob;
         Menu room;
+        string lastMove = "North";
+        
 
 
         internal void Start()
         {   
             Town cave = new() { Name = "the Cave" };
             bool keepPlaying = cave.Enter(PC);
-            
+            //todo: intro
             while (keepPlaying)
             {
                 mob = null;
                 room = null;
-                room = EverShiftingMaze.GetNewRoom(PC);
-                if (rng.Next(0, 2) == 1) BorderPrint("Amazingly, you encounter.... Nothing!");
+                
+                room = EverShiftingMaze.GetNewRoom(PC,lastMove);
+                if (rng.Next(0, 7) > 4) BorderPrint("Amazingly, you encounter.... Nothing!");//todo: adjust chance
 
                 else Encounter();
                 if (mob != null && mob.Alive)
@@ -38,32 +41,9 @@ namespace Uppgift3_TheGame
                     EverShiftingMaze.PortalStone();
                     keepPlaying = cave.Enter(PC);
                 }
+                else lastMove = choice.Substring(choice.IndexOf(' ') + 1, choice.IndexOf('.') - (choice.IndexOf(' ')+1));
+                
             } 
-
-
-            //int letterCounter = (int)'A';
-            //char monsterNameAddon;
-            //while (PC.Level < 3)
-            //{
-            //    monsterNameAddon = (char)letterCounter;
-            //    Monster mob = null;
-            //    string monsterName = "Monster" + monsterNameAddon;
-            //    mob = new(PC.Level) { Name = monsterName, Alias = monsterName };
-            //    int round = 10;
-            //    while (PC.Alive && mob.Alive)
-            //    {
-            //        CombatRoundPrint(round);
-            //        mob.TakeDamage(PC.Attack());
-            //        if (mob.Alive) PC.TakeDamage(mob.Attack());
-            //        Console.WriteLine($"{PC.Name}: {PC.CurrentHealth} hp, {mob.Name}: {mob.CurrentHealth} hp.");
-            //        round++;
-            //        Hold();
-            //    }
-            //    PC.Loot(mob.Corpse());
-            //    Console.WriteLine($"Level: {PC.Level} Xp: {PC.Xp} / {PC.XpToNextLevel}, Gold: {PC.Gold}");
-            //    letterCounter++;
-            //    round = 1;
-            //}
         }
 
         private void Encounter()
@@ -96,11 +76,11 @@ namespace Uppgift3_TheGame
                 {
                     Console.WriteLine($"{PC.Name}: {PC.CurrentHealth} hp, {mob.Name}: {mob.CurrentHealth} hp.");
                     round++;
-                    Hold();
+                    //Hold(); //todo: uncomment before hand-in
                 }
             }
             PC.Loot(mob.Corpse());
-            room.UpdateMenuItem($"Level: {PC.Level} Xp: {PC.Xp} / {PC.XpToNextLevel}", 2);
+            room.UpdateMenuItem($"Level: {PC.Level} Xp: {PC.Xp} / {PC.XpToNextLevel} Gold: {PC.Gold}", 2);
             room.UpdateMenuItem($"Current health: {PC.CurrentHealth} / {PC.MaxHealth}", 3);
         }
     }

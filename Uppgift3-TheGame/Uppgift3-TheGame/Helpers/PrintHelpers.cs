@@ -17,7 +17,7 @@ namespace Uppgift3_TheGame.Helpers
             for (int i = 0; i < 5; i++)
             {
                 Console.Write(".");
-                Thread.Sleep(50);
+                //Thread.Sleep(50); //todo: adjust speed
             }
             Console.WriteLine();
         }
@@ -55,6 +55,15 @@ namespace Uppgift3_TheGame.Helpers
                 Console.WriteLine($"║ {line.PadRight(width)} ║");
             }
             Console.WriteLine($"╚{new string('═', width+2)}╝");
+            Console.WriteLine("Press any key to continue.");
+            Console.ReadKey(true);
+        }
+        public static void ThinBorderPrint(string msg)
+        {
+            //┌┐┘└│─
+            Console.WriteLine($"┌{new string('─', msg.Length + 2)}┐");
+            Console.WriteLine($"│ {msg} │");
+            Console.WriteLine($"└{new string('─', msg.Length + 2)}┘");
             Console.WriteLine("Press any key to continue.");
             Console.ReadKey(true);
         }

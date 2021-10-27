@@ -16,7 +16,7 @@ namespace Uppgift3_TheGame
 
         public string Name { get; set; } = "";
 
-        private readonly float priceMarkUp = 1.2f;
+        private readonly float priceMarkUp = 1f;
 
         public bool Enter(Player player)
         {
@@ -48,7 +48,7 @@ namespace Uppgift3_TheGame
 
         private void VisitInn()
         {
-            int price = (int)(5 + (5 * Visitor.Level * priceMarkUp));
+            int price = 3*Visitor.Level;
             Menu inn = TownHelper.InnMenu(Visitor, price);
             string choice = inn.UseMenu();
             if (choice.StartsWith("Rest"))

@@ -33,7 +33,7 @@
                 "thwack the enemy with your stick for",
                 "poke the enemy in the eye with your stick, hurtfully doing",
                 "poke the enemy ineffectually with you stick, scratching it for",
-                "you hit the ground beside the enemy with your stick for a total of"
+                "hit the ground beside the enemy with your stick for a total of"
             }
         };
         static internal Weapon Dagger = new Weapon
