@@ -6,9 +6,9 @@
 namespace Uppgift3_TheGame.Enums
 {
     using System;
-    
+
     [Flags]
-    public enum Direction
+    internal enum Direction
     {
         None = 0,
         North = 1,

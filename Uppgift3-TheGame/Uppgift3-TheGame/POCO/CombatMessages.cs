@@ -1,15 +1,15 @@
 ﻿namespace Uppgift3_TheGame.POCO
 {
-    public class CombatMessages
+    internal class CombatMessages
     {   
-        public string[] Blocks = new string[]
+        internal string[] Blocks = new string[]
         {
             "skillfully blocks",
             "critically blocks",
             "stumbles but manages to block",
             "trips over its own feets and blocks"
         };
-        public string[] Hits = new string[]
+        internal string[] Hits = new string[]
         {
             "strikes true for",
             "makes an incredible hit for",

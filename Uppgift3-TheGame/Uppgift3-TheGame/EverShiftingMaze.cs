@@ -76,7 +76,7 @@ namespace Uppgift3_TheGame
             Menu encounterMenu = new Menu(encounterList, 1, 2);
             return encounterMenu;
         }
-        internal static void PortalStone()
+        internal static bool PortalStone(Player pc,Town town)
         {
             string[] portalStone =
                     {
@@ -84,8 +84,10 @@ namespace Uppgift3_TheGame
                         "You step trough and find yourself back in \"town\"."
                     };
             BorderPrint(portalStone);
+            bool keepPlaying = town.Enter(pc);
+            return keepPlaying;
         }
-        public static string Intro()
+        internal static string Intro()
         {
             string[] intro =
             {

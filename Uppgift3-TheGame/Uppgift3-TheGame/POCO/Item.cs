@@ -7,12 +7,12 @@
     using System.Threading.Tasks;
     using Interface;
 
-    public class Item
+    internal class Item
     {
-        public string Name { get; set; }
-        public int Price { get; set; }
+        internal string Name { get; set; }
+        internal int Price { get; set; }
 
-        public virtual int EffectiveValue { get; }
-        public string[] FlavourTexts { get; set; } = new string[4];
+        internal virtual int EffectiveValue { get; }
+        internal string[] FlavourTexts { get; set; } = new string[4];
     }
 }

@@ -1,11 +1,6 @@
 ﻿namespace Uppgift3_TheGame.POCO
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Interface;
 
     static internal class Equipment
     {
@@ -171,7 +166,7 @@
                  "feel like you want to cry when the mystical energies in your armor winks out and absorbs"
             }
         };
-        static internal List<Armor> ArmorList = new() { Cloth,Leather,Chainmail,Plate,PowerArmor };
+        static internal List<Armor> ArmorList = new() { Cloth, Leather, Chainmail, Plate, PowerArmor };
         #endregion Armor
         static internal List<Item> EquipmentList = new() { Stick, Dagger, Sword, GreatAxe, MagicSword, Cloth, Leather, Chainmail, Plate, PowerArmor };
 

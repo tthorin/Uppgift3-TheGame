@@ -9,8 +9,8 @@ namespace Uppgift3_TheGame.POCO
     internal class Armor : Item
     {
         
-        public int Protection { get; set; } = 0;
-        public override int EffectiveValue => Protection;
+        internal int Protection { get; set; } = 0;
+        internal override int EffectiveValue => Protection;
        
         
     }

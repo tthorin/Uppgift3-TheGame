@@ -8,9 +8,9 @@ namespace Uppgift3_TheGame.Helpers
     using System;
     using System.Threading;
 
-    public static class PrintHelpers
+    internal static class PrintHelpers
     {
-        public static void DramaticPrint(string msg)
+        internal static void DramaticPrint(string msg)
         {
             Console.CursorVisible = false;
             Console.Write(msg);
@@ -21,7 +21,7 @@ namespace Uppgift3_TheGame.Helpers
             }
             Console.WriteLine();
         }
-        public static void PrintAndHold(string msg)
+        internal static void PrintAndHold(string msg)
         {
             Console.WriteLine(msg);
             Console.WriteLine("Press any key to continue.");
@@ -29,12 +29,12 @@ namespace Uppgift3_TheGame.Helpers
             Console.ReadKey(true);
             Console.CursorVisible = true;
         }
-        public static void Hold()
+        internal static void Hold()
         {
             Console.WriteLine("Press any key to continue.");
             Console.ReadKey(true);
         }
-        public static void BorderPrint(string msg)
+        internal static void BorderPrint(string msg)
         {
             Console.WriteLine($"╔{new string('═', msg.Length + 2)}╗");
             Console.WriteLine($"║ {msg} ║");
@@ -42,7 +42,7 @@ namespace Uppgift3_TheGame.Helpers
             Console.WriteLine("Press any key to continue.");
             Console.ReadKey(true);
         }
-        public static void BorderPrint(string[] msg, bool holdAtEnd = true)
+        internal static void BorderPrint(string[] msg, bool holdAtEnd = true)
         {
             int width = 0;
             foreach (var line in msg)
@@ -61,7 +61,7 @@ namespace Uppgift3_TheGame.Helpers
                 Console.ReadKey(true);
             }
         }
-        public static void ThinBorderPrint(string msg)
+        internal static void ThinBorderPrint(string msg)
         {
             //┌┐┘└│─
             Console.WriteLine($"┌{new string('─', msg.Length + 2)}┐");
@@ -70,7 +70,7 @@ namespace Uppgift3_TheGame.Helpers
             Console.WriteLine("Press any key to continue.");
             Console.ReadKey(true);
         }
-        public static void CombatRoundPrint(int round)
+        internal static void CombatRoundPrint(int round)
         {
             //┌┐└┘─┤├
             Console.WriteLine($"           ┌────────┐");

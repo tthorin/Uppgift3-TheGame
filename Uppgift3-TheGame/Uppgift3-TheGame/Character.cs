@@ -9,24 +9,24 @@ namespace Uppgift3_TheGame
     using POCO;
     using static Helpers.PrintHelpers;
 
-    public class Character
+    internal class Character
     {
         protected CombatMessages msg = new();
-        public string Name { get; set; } = "";
-        public virtual string Alias { get; set; } = "";
-        public int MaxHealth { get; set; } = 100;
-        public int CurrentHealth { get; set; } = 100;
-        public int Offense { get; set; } = 10;
-        public int Defense { get; set; } = 10;
-        public int Damage { get; set; } = 25;
-        public int Toughness { get; set; } = 10;
-        public int Gold { get; set; } = 0;
-        public bool Alive { get; set; } = true;
+        internal string Name { get; set; } = "";
+        internal virtual string Alias { get; set; } = "";
+        internal int MaxHealth { get; set; } = 100;
+        internal int CurrentHealth { get; set; } = 100;
+        internal int Offense { get; set; } = 10;
+        internal int Defense { get; set; } = 10;
+        internal int Damage { get; set; } = 25;
+        internal int Toughness { get; set; } = 10;
+        internal int Gold { get; set; } = 0;
+        internal bool Alive { get; set; } = true;
 
 
         protected static Random rng = new();
 
-        public virtual bool TakeDamage(int damage)
+        internal virtual bool TakeDamage(int damage)
         {
             (string msg, int blocked) result = DoRoll(false, Defense, Toughness);
 
@@ -67,13 +67,13 @@ namespace Uppgift3_TheGame
             return result;
         }
 
-        public virtual int Attack()
+        internal virtual int Attack()
         {
             (string flavourText, int damage) result = DoRoll(true, Offense, Damage);
             DramaticPrint($"{Alias} {result.flavourText} {result.damage} points of damage");
             return result.damage;
         }
-        public virtual void Die()
+        internal virtual void Die()
         {
             BorderPrint($"{Name} falls over, dead.");
         }

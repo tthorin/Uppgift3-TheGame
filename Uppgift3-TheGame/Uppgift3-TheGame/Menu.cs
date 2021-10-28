@@ -8,7 +8,7 @@ namespace Uppgift3_TheGame
     using System;
     using System.Collections.Generic;
 
-    public class Menu
+    internal class Menu
     {
 
         #region Private Fields
@@ -25,30 +25,30 @@ namespace Uppgift3_TheGame
 
         #endregion Private Fields
 
-        #region Public Constructors
+        #region internal Constructors
 
-        public Menu(List<string> menuItems, int headerLines)
+        internal Menu(List<string> menuItems, int headerLines)
         {
             SetupMenu(this, menuItems, headerLines, 0);
         }
 
-        public Menu(List<string> menuItems, int headerLines, int infoLines)
+        internal Menu(List<string> menuItems, int headerLines, int infoLines)
         {
             SetupMenu(this, menuItems, headerLines, infoLines);
         }
 
-        public Menu(List<string> menuItems)
+        internal Menu(List<string> menuItems)
         {
             SetupMenu(this, menuItems, 1, 0);
         }
 
-        #endregion Public Constructors
+        #endregion internal Constructors
 
-        #region Public Properties
+        #region internal Properties
 
-        public List<string> MenuItems { get; set; }
+        internal List<string> MenuItems { get; set; }
 
-        #endregion Public Properties
+        #endregion internal Properties
 
         #region Private Properties
 
@@ -58,21 +58,21 @@ namespace Uppgift3_TheGame
 
         #endregion Private Properties
 
-        #region Public Methods
+        #region internal Methods
 
-        public void UpdateMenuItem(string update, int index)
+        internal void UpdateMenuItem(string update, int index)
         {
             MenuItems[index] = update;
             SetupPrintables(this);
         }
 
-        public string UseMenu()
+        internal string UseMenu()
         {
             if (MenuItems.Count == 0) MenuItems.Add("Auto added item because of empy menu, check your code.");
             return DoMenu(this);
         }
 
-        #endregion Public Methods
+        #endregion internal Methods
 
         #region Private Methods
 

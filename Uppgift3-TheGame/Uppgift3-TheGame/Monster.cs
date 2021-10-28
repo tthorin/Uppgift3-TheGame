@@ -3,16 +3,16 @@ namespace Uppgift3_TheGame
 {
     using System;
     using Helpers;
-    public class Monster : Character
+    internal class Monster : Character
     {
-        public int XpValue { get; set; }
-        public string FullName { get => $"{Prefix} {Class} called {Name} {Suffix}"; }
-        public override string Alias{ get=> $"{Name} {Suffix}"; }
-        public string Prefix { get; set; } = "";
-        public string Suffix { get; set; } = "";
-        public string Class { get; set; } = "";
+        internal int XpValue { get; set; }
+        internal string FullName { get => $"{Prefix} {Class} called {Name} {Suffix}"; }
+        internal override string Alias{ get=> $"{Name} {Suffix}"; }
+        internal string Prefix { get; set; } = "";
+        internal string Suffix { get; set; } = "";
+        internal string Class { get; set; } = "";
         
-        public Monster(int powerUp)
+        internal Monster(int powerUp)
         {
             MonsterHelper.RandomizeMonster(this);
             Offense += powerUp / 2;
@@ -25,7 +25,7 @@ namespace Uppgift3_TheGame
             XpValue = powerUp;
         }
         
-        public (int gold, int xp) Corpse()
+        internal (int gold, int xp) Corpse()
         {
             (int gold, int xp) loot = (Gold, XpValue);
             return loot;

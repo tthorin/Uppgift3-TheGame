@@ -10,21 +10,23 @@ namespace Uppgift3_TheGame
     using static Helpers.PrintHelpers;
     using static POCO.Equipment;
 
-    public class Player : Character
+    internal class Player : Character
     {
-        public int Level { get; private set; } = 0;
-        public int Xp { get; private set; } = 0;
-        public override string Alias { get => "You"; }
-        public double XpToNextLevel { get; private set; } = 1;
-        public Weapon EquippedWeapon { get; private set; } = Fists;
+        internal int Level { get; private set; } = 0;
+        internal int Xp { get; private set; } = 0;
+        internal override string Alias { get => "You"; }
+        internal double XpToNextLevel { get; private set; } = 1;
+        internal Weapon EquippedWeapon { get; private set; } = Fists;
         internal Armor EquippedArmor { get; private set; } = BirthdaySuit;
+        internal bool GameOver { get; private set; } = false;
 
-        public Player()
+        internal Player()
         {
             LevelUp(++Level);
             CurrentHealth = MaxHealth;
             msg.Hits = EquippedWeapon.FlavourTexts;
             msg.Blocks = EquippedArmor.FlavourTexts;
+            CurrentHealth = 5;
         }
 
         private void LevelUp(int newLevel)
@@ -46,10 +48,12 @@ namespace Uppgift3_TheGame
                     $"{"Offense:", -18}{Xp,5} {"Defense:", -15}{Defense, 4}",
                     $"{"Damage:", -18}{Xp, 5} {"Toughness:", -15}{Toughness, 4}"
                 };
-                BorderPrint(lvlUp);
+                //todo: add msg for lvl 10 game over
+                if (Level == 10) GameOver = true;
+                else BorderPrint(lvlUp);
             }
         }
-        public void Loot((int gold, int xp) loot)
+        internal void Loot((int gold, int xp) loot)
         {
             Gold += loot.gold;
             Xp += loot.xp;
@@ -61,7 +65,7 @@ namespace Uppgift3_TheGame
             }
 
         }
-        public void EquipWeapon(Weapon weapon)
+        internal void EquipWeapon(Weapon weapon)
         {
             EquippedWeapon = weapon;
             Damage = 10 + Level * 5 + weapon.Damage;
@@ -73,15 +77,15 @@ namespace Uppgift3_TheGame
             Toughness = 10 + Level * 5 + armor.Protection;
             msg.Blocks = armor.FlavourTexts;
         }
-        public int Purse()
+        internal int Purse()
         {
             return Gold;
         }
-        public void Pay(int price)
+        internal void Pay(int price)
         {
             Gold -= price;
         }
-        public void ShowStats()
+        internal void ShowStats()
         {
             string[] stats =
             {
@@ -95,10 +99,35 @@ namespace Uppgift3_TheGame
             };
             BorderPrint(stats);
         }
-        public override void Die()
+        internal override void Die()
         {
+            Console.WriteLine(@"                            ,--.
+                           {    }
+                           K,   }
+                          /  ~Y`
+                     ,   /   /
+                    {_'-K.__/
+                      `/-.__L._
+                      /  ' /`\_}
+                     /  ' /
+             ____   /  ' /
+      ,-'~~~~    ~~/  ' /_
+    ,'             ``~~~  ',
+   (                        Y
+  {                         I
+ {      -                    `,
+ |       ',                   )
+ |        |   ,..__      __. Y
+ |    .,_./  Y ' / ^Y   J   )|
+ \           |' /   |   |   ||
+  \          L_/    . _ (_,.'(
+   \,   ,      ^^""' / |      )
+     \_  \          /,L]     /
+       '-_~-,       ` `   ./`
+          `'{_            )
+              ^^\..___,.--`(from https://ascii.co.uk/)"); 
             BorderPrint($"You fall to the ground, dead.");
-            Game.GameOver();
+            GameOver = true;
         }
     }
 }

@@ -6,10 +6,10 @@
 namespace Uppgift3_TheGame.POCO
 {
     using Interface;
-    public class Weapon : Item
+    internal class Weapon : Item
     {
-        public int Damage { get; set; } = 0;
+        internal int Damage { get; set; } = 0;
 
-        public override int EffectiveValue => Damage;
+        internal override int EffectiveValue => Damage;
     }
 }

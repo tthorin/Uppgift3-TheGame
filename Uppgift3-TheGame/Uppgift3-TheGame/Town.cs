@@ -10,15 +10,15 @@ namespace Uppgift3_TheGame
     using POCO;
     using static Helpers.PrintHelpers;
 
-    public class Town
+    internal class Town
     {
         private Player Visitor { get; set; }
 
-        public string Name { get; set; } = "";
+        internal string Name { get; set; } = "";
 
         private readonly float priceMarkUp = 1f;
 
-        public bool Enter(Player player)
+        internal bool Enter(Player player)
         {
             Visitor = player;
             bool leaving = false;
