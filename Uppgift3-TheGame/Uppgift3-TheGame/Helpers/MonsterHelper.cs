@@ -34,7 +34,7 @@ namespace Uppgift3_TheGame.Helpers
             string[] name =
             {
                 "Artemis","Bertram", "Charlene","Devon","Elric","Froro","Gandulf","Hemingway","Ivan","Joar","Kalle","Lama",
-                "Morrow","Nisse","Oliphant","Petrus","Quentin","Romeo","Sierra","Tomten","Ulvar","Vanilj","Whodunnit","Xerxes",
+                "Morrow","Nisse","Oliphant","Petrus","Quentin","Romeo","Sierra","Tord","Ulvar","Vanilj","Whodunnit","Xerxes",
                 "Yrrol","Zentharim"
             };
 
