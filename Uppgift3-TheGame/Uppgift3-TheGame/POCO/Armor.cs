@@ -6,12 +6,12 @@
 namespace Uppgift3_TheGame.POCO
 {
     using Interface;
-    internal class Armor : ISellable
+    internal class Armor : Item
     {
-        public string Name { get; set; } = "";
+        
         public int Protection { get; set; } = 0;
-        public int EffectiveValue => Protection;
-        public int Price { get; set; } = 0;
-        public string[] FlavourTexts { get; set; } = new string[4];
+        public override int EffectiveValue => Protection;
+       
+        
     }
 }

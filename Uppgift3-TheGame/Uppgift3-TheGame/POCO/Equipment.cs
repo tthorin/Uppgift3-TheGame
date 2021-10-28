@@ -173,7 +173,7 @@
         };
         static internal List<Armor> ArmorList = new() { Cloth,Leather,Chainmail,Plate,PowerArmor };
         #endregion Armor
-        static internal List<ISellable> EquipmentList = new() { Stick, Dagger, Sword, GreatAxe, MagicSword, Cloth, Leather, Chainmail, Plate, PowerArmor };
+        static internal List<Item> EquipmentList = new() { Stick, Dagger, Sword, GreatAxe, MagicSword, Cloth, Leather, Chainmail, Plate, PowerArmor };
 
     }
 }

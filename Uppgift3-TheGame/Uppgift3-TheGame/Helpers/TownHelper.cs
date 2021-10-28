@@ -49,7 +49,7 @@ namespace Uppgift3_TheGame.POCO
             aShopList.Add($"Your current weapon is: {equippedWeapon.Name}");
             aShopList.Add($"Your current armor is: {equippedArmor.Name}");
             aShopList.Add($"You have {gold} gold coins in your purse.");
-            foreach (Interface.ISellable item in EquipmentList)
+            foreach (Item item in EquipmentList)
             {
                 aShopList.Add($"{item.Name} - {(int)(item.Price * markUp)} gold.");
             }

@@ -6,13 +6,10 @@
 namespace Uppgift3_TheGame.POCO
 {
     using Interface;
-    public class Weapon : ISellable
+    public class Weapon : Item
     {
-        public string Name { get; set; } = "";
         public int Damage { get; set; } = 0;
-        public int Price { get; set; } = 0;
-        public string[] FlavourTexts { get; set; } = new string[4];
 
-        public int EffectiveValue => Damage;
+        public override int EffectiveValue => Damage;
     }
 }

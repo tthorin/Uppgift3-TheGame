@@ -14,13 +14,13 @@ namespace Uppgift3_TheGame
     {
         public int Level { get; private set; } = 0;
         public int Xp { get; private set; } = 0;
-        public override string Alias { get => "You";}
+        public override string Alias { get => "You"; }
         public double XpToNextLevel { get; private set; } = 1;
         public Weapon EquippedWeapon { get; private set; } = Fists;
         internal Armor EquippedArmor { get; private set; } = BirthdaySuit;
-        
+
         public Player()
-        {   
+        {
             LevelUp(++Level);
             CurrentHealth = MaxHealth;
             msg.Hits = EquippedWeapon.FlavourTexts;
@@ -36,15 +36,30 @@ namespace Uppgift3_TheGame
             MaxHealth += 50;
             Damage = 10 + (newLevel * 5) + EquippedWeapon.Damage;
             Toughness = 10 + (newLevel * 4) + EquippedArmor.Protection;
+            if (Level > 1)
+            {
+                string[] lvlUp =
+                {
+                    "DING!",
+                    "You leveled up!",
+                    $"{"Xp to next level:", -18}{Xp, 5} {"New maxhealth:", -15}{MaxHealth, 4}",
+                    $"{"Offense:", -18}{Xp,5} {"Defense:", -15}{Defense, 4}",
+                    $"{"Damage:", -18}{Xp, 5} {"Toughness:", -15}{Toughness, 4}"
+                };
+                BorderPrint(lvlUp);
+            }
         }
         public void Loot((int gold, int xp) loot)
         {
             Gold += loot.gold;
             Xp += loot.xp;
-            System.Console.WriteLine($"\nYou gain {loot.xp} XP and {loot.gold} gold. Current health: {CurrentHealth} / {MaxHealth} HP.");
-            ThinBorderPrint($"You are level {Level}, have {Xp} XP out of {XpToNextLevel} needed for next level and {Gold} gold.");
-
             if (Xp >= XpToNextLevel) LevelUp(++Level);
+            else
+            {
+                System.Console.WriteLine($"\nYou gain {loot.xp} XP and {loot.gold} gold. Current health: {CurrentHealth} / {MaxHealth} HP.");
+                ThinBorderPrint($"You are level {Level}, have {Xp} XP out of {XpToNextLevel} needed for next level and {Gold} gold.");
+            }
+
         }
         public void EquipWeapon(Weapon weapon)
         {
@@ -79,6 +94,11 @@ namespace Uppgift3_TheGame
                 $"Armor:".PadRight(8)+$"{EquippedArmor.Name,25}"
             };
             BorderPrint(stats);
+        }
+        public override void Die()
+        {
+            BorderPrint($"You fall to the ground, dead.");
+            Game.GameOver();
         }
     }
 }

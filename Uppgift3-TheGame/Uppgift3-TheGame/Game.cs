@@ -26,9 +26,11 @@ namespace Uppgift3_TheGame
                 room = null;
 
                 room = EverShiftingMaze.GetNewRoom(PC, lastMove);
-                if (rng.Next(0, 7) > 4) BorderPrint("Amazingly, you encounter.... Nothing!");
+                Encounter();
 
-                else Encounter();
+
+
+
                 string choice = "";
                 do
                 {
@@ -68,13 +70,17 @@ namespace Uppgift3_TheGame
 
         private void Encounter()
         {
-            mob = null;
-            mob = new Monster(PC.Level);
-            BorderPrint($"You encounter a {mob.FullName}!");
-            Menu encounter = EverShiftingMaze.EncounterMenu(PC, mob);
-            string choice = encounter.UseMenu();
-            if (choice == "Fight!") Fight();
-            else Flee();
+            if (rng.Next(0, 7) > 4) BorderPrint("Amazingly, you encounter.... Nothing!");
+            else
+            {
+                mob = null;
+                mob = new Monster(PC.Level);
+                BorderPrint($"You encounter a {mob.FullName}!");
+                Menu encounter = EverShiftingMaze.EncounterMenu(PC, mob);
+                string choice = encounter.UseMenu();
+                if (choice == "Fight!") Fight();
+                else Flee();
+            }
         }
 
         private void Flee()
@@ -102,6 +108,11 @@ namespace Uppgift3_TheGame
             PC.Loot(mob.Corpse());
             room.UpdateMenuItem($"Level: {PC.Level} Xp: {PC.Xp} / {PC.XpToNextLevel} Gold: {PC.Gold}", 2);
             room.UpdateMenuItem($"Current health: {PC.CurrentHealth} / {PC.MaxHealth}", 3);
+        }
+
+        internal static void GameOver()
+        {
+            throw new NotImplementedException();
         }
     }
 }

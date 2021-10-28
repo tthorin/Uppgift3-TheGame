@@ -76,7 +76,7 @@ namespace Uppgift3_TheGame
                 if (!leaving)
                 {
                     string buyString = choice.Substring(0, choice.IndexOf('-') - 1);
-                    Interface.ISellable buying = Equipment.EquipmentList.Find(item => item.Name == buyString);
+                    Item buying = Equipment.EquipmentList.Find(item => item.Name == buyString);
                     int price = (int)(buying.Price * priceMarkUp);
                     if (CanAfford(price))
                     {
@@ -91,7 +91,7 @@ namespace Uppgift3_TheGame
             } while (!leaving);
         }
 
-        private void BuyItem(Interface.ISellable item)
+        private void BuyItem(Item item)
         {
             int itemToBuy = item.EffectiveValue;
             int playerWeapon = Visitor.EquippedWeapon.Damage;
@@ -114,7 +114,7 @@ namespace Uppgift3_TheGame
         {
             bool canAfford = false;
             if (price <= Visitor.Purse()) canAfford = true;
-            else PrintAndHold("You can't afford that! :(");
+            else BorderPrint("You can't afford that! :(");
             return canAfford;
         }
     }
