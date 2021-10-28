@@ -1,32 +1,36 @@
 ﻿
 namespace Uppgift3_TheGame
 {
+    using Newtonsoft.Json;
     using System;
     using static Helpers.PrintHelpers;
 
     public class Game
     {
-        private Player PC = new() { Name = "Nisse" };
+        private Player player = new() { Name = "Nisse" };
+     
         private static Random rng = new();
         Monster mob;
         Menu room;
         string lastMove = "North";
+        
 
 
 
         public void Start()
         {
-            PC.Name = EverShiftingMaze.Intro();
+            player.Name = EverShiftingMaze.Intro();
+            Player boss = (Player)player.Clone(); //todo: fixa boss.
             Town cave = new() { Name = "the Cave" };
-            bool keepPlaying = cave.Enter(PC);
+            bool keepPlaying = cave.Enter(player);
 
-            while (keepPlaying && !PC.GameOver)
+            while (keepPlaying && !player.GameOver)
             {
                 room = null;
                 Encounter();
-                room = EverShiftingMaze.GetNewRoom(PC, lastMove);
+                room = EverShiftingMaze.GetNewRoom(player, lastMove);
 
-                if (!PC.GameOver)
+                if (!player.GameOver)
                 {
                     keepPlaying = ShowRoom(cave);
                 }
@@ -41,19 +45,19 @@ namespace Uppgift3_TheGame
             bool keepPlaying = true;
             do
             {
-                room.UpdateMenuItem($"Current health: {PC.CurrentHealth} / {PC.MaxHealth}", 3);
+                room.UpdateMenuItem($"Current health: {player.CurrentHealth} / {player.MaxHealth}", 3);
 
                 if (mob != null) AddMobToRoomMenu();
                 else RemoveMobFromRoomMenu();
 
                 choice = room.UseMenu();
 
-                if (choice.StartsWith("Show")) PC.ShowStats();
+                if (choice.StartsWith("Show")) player.ShowStats();
                 else if (choice.StartsWith("Attack")) Fight();
 
-            } while (!PC.GameOver && choice != "Head back to town." && !choice.StartsWith("Go"));
+            } while (!player.GameOver && choice != "Head back to town." && !choice.StartsWith("Go"));
 
-            if (choice == "Head back to town.") keepPlaying = EverShiftingMaze.PortalStone(PC, town);
+            if (choice == "Head back to town.") keepPlaying = EverShiftingMaze.PortalStone(player, town);
 
             else lastMove = choice.Substring(choice.IndexOf(' ') + 1, choice.IndexOf('.') - (choice.IndexOf(' ') + 1));
 
@@ -77,9 +81,9 @@ namespace Uppgift3_TheGame
             if (rng.Next(0, 7) > 4) BorderPrint("Amazingly, you encounter.... Nothing!");
             else
             {
-                mob = new Monster(PC.Level);
+                mob = new Monster(player.Level);
                 BorderPrint($"You encounter a {mob.FullName}!");
-                Menu encounter = EverShiftingMaze.EncounterMenu(PC, mob);
+                Menu encounter = EverShiftingMaze.EncounterMenu(player, mob);
                 string choice = encounter.UseMenu();
                 if (choice == "Fight!") Fight();
                 else Flee();
@@ -89,26 +93,26 @@ namespace Uppgift3_TheGame
         private void Flee()
         {
             BorderPrint($"As you turn and flee like a chicken, {mob.Alias} hits you in the back!");
-            PC.TakeDamage(mob.Attack());
+            player.TakeDamage(mob.Attack());
             Hold();
         }
 
         private void Fight()
         {
             int round = 1;
-            while (PC.Alive && mob.Alive)
+            while (player.Alive && mob.Alive)
             {
                 CombatRoundPrint(round);
-                mob.TakeDamage(PC.Attack());
-                if (mob.Alive) PC.TakeDamage(mob.Attack());
-                if (mob.Alive && PC.Alive)
+                mob.TakeDamage(player.Attack());
+                if (mob.Alive) player.TakeDamage(mob.Attack());
+                if (mob.Alive && player.Alive)
                 {
-                    Console.WriteLine($"{PC.Name}: {PC.CurrentHealth} hp, {mob.Name}: {mob.CurrentHealth} hp.");
+                    Console.WriteLine($"{player.Name}: {player.CurrentHealth} hp, {mob.Name}: {mob.CurrentHealth} hp.");
                     round++;
                     Hold();
                 }
             }
-            if (PC.Alive) PC.Loot(mob.Corpse());
+            if (player.Alive) player.Loot(mob.Corpse());
             mob = null;
         }
 

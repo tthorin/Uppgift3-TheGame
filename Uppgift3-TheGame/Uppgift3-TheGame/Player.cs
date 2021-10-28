@@ -6,11 +6,13 @@
 namespace Uppgift3_TheGame
 {
     using System;
+    using Newtonsoft.Json;
     using POCO;
     using static Helpers.PrintHelpers;
     using static POCO.Equipment;
+    
 
-    internal class Player : Character
+    internal class Player : Character,ICloneable
     {
         internal int Level { get; private set; } = 0;
         internal int Xp { get; private set; } = 0;
@@ -128,6 +130,13 @@ namespace Uppgift3_TheGame
               ^^\..___,.--`(from https://ascii.co.uk/)"); 
             BorderPrint($"You fall to the ground, dead.");
             GameOver = true;
+        }
+
+        public object Clone()
+        {
+            var clone = JsonConvert.SerializeObject(this);
+            var copy = JsonConvert.DeserializeObject<Player>(clone);
+            return copy;
         }
     }
 }

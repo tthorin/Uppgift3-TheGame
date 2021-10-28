@@ -5,7 +5,7 @@
 
 namespace Uppgift3_TheGame.POCO
 {
-    using Interface;
+    
     internal class Armor : Item
     {
         
