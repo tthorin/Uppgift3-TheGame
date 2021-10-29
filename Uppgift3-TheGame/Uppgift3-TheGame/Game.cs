@@ -9,27 +9,27 @@ namespace Uppgift3_TheGame
     public class Game
     {
         private Player player = new() { Name = "Nisse" };
-     
+
         private static Random rng = new();
         Monster mob;
         Menu roomMenu;
-        MazeRoom room = new();
+        //MazeRoom room = new();
         string lastMove = "North";
 
 
         public void Start()
         {
-            player.Name = EverShiftingMaze.Intro();
+            player.Name = GameHelper.Intro();
             Player boss = (Player)player.Clone(); //todo: fixa boss.
             Town cave = new() { Name = "the Cave" };
             bool keepPlaying = cave.Enter(player);
 
             while (keepPlaying && !player.GameOver)
             {
-                room = Maze.ShowMaze();
+                (MazeRoom room, bool noEncounter) mazeReturn = Maze.ShowMaze();
+                if (!mazeReturn.noEncounter) Encounter();
                 roomMenu = null;
-                //Encounter();
-                roomMenu = EverShiftingMaze.GetRoomMenu(player, lastMove);
+                roomMenu = GameHelper.GetRoomMenu(player, mazeReturn.room);
 
                 if (!player.GameOver)
                 {
@@ -58,7 +58,7 @@ namespace Uppgift3_TheGame
 
             } while (!player.GameOver && choice != "Head back to town." && !choice.StartsWith("Go"));
 
-            if (choice == "Head back to town.") keepPlaying = EverShiftingMaze.PortalStone(player, town);
+            if (choice == "Head back to town.") keepPlaying = GameHelper.PortalStone(player, town);
 
             else lastMove = choice.Substring(choice.IndexOf(' ') + 1, choice.IndexOf('.') - (choice.IndexOf(' ') + 1));
 
@@ -77,19 +77,14 @@ namespace Uppgift3_TheGame
             roomMenu.MenuItems.Insert(roomMenu.MenuItems.Count - 2, $"Attack {mob.Alias}.");
         }
 
-        //todo:make private and uncomment
-        internal void Encounter()
+        private void Encounter()
         {
-            //if (rng.Next(0, 7) > 4) BorderPrint("Amazingly, you encounter.... Nothing!");
-            //else
-            //{
-                mob = new Monster(player.Level);
-                BorderPrint($"You encounter a {mob.FullName}!");
-                Menu encounter = EverShiftingMaze.EncounterMenu(player, mob);
-                string choice = encounter.UseMenu();
-                if (choice == "Fight!") Fight();
-                else Flee();
-            //}
+            mob = new Monster(player.Level);
+            BorderPrint($"You encounter a {mob.FullName}!");
+            Menu encounter = GameHelper.EncounterMenu(player, mob);
+            string choice = encounter.UseMenu();
+            if (choice == "Fight!") Fight();
+            else Flee();
         }
 
         private void Flee()

@@ -7,16 +7,12 @@ namespace Uppgift3_TheGame
     using static Helpers.PrintHelpers;
     using POCO;
 
-    internal static class EverShiftingMaze
+    internal static class GameHelper
     {
-        private static Random rng = new();
+        static Random rng = new();
 
         internal static Menu GetRoomMenu(Player pc, MazeRoom room)
-        {   
-            //Enum.TryParse(lastMove, out Direction last);
-            //Direction mustHave = ReverseDirection(last);
-            //bool validRoom = false;
-
+        {
             string[] roomDescriptions =
             {
                 "This room looks oddly familiar...",
@@ -34,24 +30,19 @@ namespace Uppgift3_TheGame
             roomList.Add($"Current health: {pc.CurrentHealth} / {pc.MaxHealth}");
             roomList.Add("");
             List<string> exitList = new();
-            do
-            {
-                exitList.Clear();
-                Direction exits = (Direction)rng.Next(1, 16);
-                if ((exits & Direction.North) == Direction.North) exitList.Add("Go North.");
-                if ((exits & Direction.East) == Direction.East) exitList.Add("Go East.");
-                if ((exits & Direction.South) == Direction.South) exitList.Add("Go South.");
-                if ((exits & Direction.West) == Direction.West) exitList.Add("Go West.");
-                if ((exits & mustHave) == mustHave) validRoom = true;
 
-            } while (!validRoom || exitList.Count < 2);
+            if ((room.Exits & Direction.North) == Direction.North) exitList.Add("Go North.");
+            if ((room.Exits & Direction.East) == Direction.East) exitList.Add("Go East.");
+            if ((room.Exits & Direction.South) == Direction.South) exitList.Add("Go South.");
+            if ((room.Exits & Direction.West) == Direction.West) exitList.Add("Go West.");
+
             roomList.AddRange(exitList);
 
             roomList.Add("Show player stats.");
             roomList.Add("Head back to town.");
 
-            Menu room = new Menu(roomList, 2, 3);
-            return room;
+            Menu roomMenu = new Menu(roomList, 2, 3);
+            return roomMenu;
         }
 
         private static Direction ReverseDirection(Direction last)
@@ -77,7 +68,7 @@ namespace Uppgift3_TheGame
             Menu encounterMenu = new Menu(encounterList, 1, 2);
             return encounterMenu;
         }
-        internal static bool PortalStone(Player pc,Town town)
+        internal static bool PortalStone(Player pc, Town town)
         {
             string[] portalStone =
                     {

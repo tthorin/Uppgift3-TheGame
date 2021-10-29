@@ -21,14 +21,17 @@ namespace Uppgift3_TheGame
         static Position startPos = new() { X = (maxWidth - 2) / 2, Y = (maxHeight - 2) / 2 };
         static Position currentPos = new() { X = startPos.X, Y = startPos.Y };
         static Random rng = new();
+        static bool noEncounter = true;
         
-        internal static MazeRoom ShowMaze()
-        {
+        internal static (MazeRoom room,bool noEncounter) ShowMaze()
+        {   
             PrintBorder();
-            return maze[currentPos.X, currentPos.Y];
+            Console.Clear();
+            return (maze[currentPos.X, currentPos.Y],noEncounter);
         }
         private static void PrintBorder()
-        {   
+        {
+            noEncounter = true;
             SetColors();
             Console.Clear();
             for (int row = 0; row < maxHeight; row++)
@@ -70,7 +73,6 @@ namespace Uppgift3_TheGame
         {
             Position newPos = new(currentPos);
             Console.CursorVisible = false;
-            bool noEncounter = true;
             ConsoleKeyInfo key = new();
 
             while (key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Escape && noEncounter)
@@ -97,10 +99,8 @@ namespace Uppgift3_TheGame
                     currentPos.Update(newPos);
                 }
                 //todo: uncomment
-                //if (rng.Next(0, 10) == 9) noEncounter = false;
+                if (rng.Next(0, 10) == 9) noEncounter = false;
             }
-            //todo: fix so can call Encounter() from here 
-            //if (!noEncounter) game.Encounter();
         }
 
         private static void NewRoom(Position pos)
