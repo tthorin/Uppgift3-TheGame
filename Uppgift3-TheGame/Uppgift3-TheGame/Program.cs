@@ -3,19 +3,13 @@
     using System;
     using System.Collections.Generic;
 
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public Game game;
+        public static void Main(string[] args)
         {
-            Maze.PrintBorder();
-            Console.Clear();
-            Console.WriteLine("hepp: ");
-            Console.ReadLine();
-            Maze.PrintBorder();
-            
             Game game = new();
             game.Start();
-            
         }
     }
 }

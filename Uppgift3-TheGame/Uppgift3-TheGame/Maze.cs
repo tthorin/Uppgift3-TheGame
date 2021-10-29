@@ -11,23 +11,24 @@ namespace Uppgift3_TheGame
     using Enums;
     using static Helpers.PrintHelpers;
     using Uppgift3_TheGame.POCO;
+    
 
-    public static class Maze
-    {
-
-        static Dictionary<Direction, string> dirToString = new();
+    internal static class Maze
+    {   
         static int maxWidth = Console.WindowWidth - 1;
         static int maxHeight = Console.WindowHeight - 1;
         static MazeRoom[,] maze = new MazeRoom[maxWidth - 2, maxHeight - 2];
         static Position startPos = new() { X = (maxWidth - 2) / 2, Y = (maxHeight - 2) / 2 };
         static Position currentPos = new() { X = startPos.X, Y = startPos.Y };
-        
         static Random rng = new();
         
-        //todo: remove public
-        public static void PrintBorder()
+        internal static MazeRoom ShowMaze()
         {
-            
+            PrintBorder();
+            return maze[currentPos.X, currentPos.Y];
+        }
+        private static void PrintBorder()
+        {   
             SetColors();
             Console.Clear();
             for (int row = 0; row < maxHeight; row++)
@@ -40,9 +41,10 @@ namespace Uppgift3_TheGame
             PrintMaze();
         }
 
-        internal static void PrintMaze()
+        private static void PrintMaze()
         {
-            if (maze[startPos.X, startPos.Y] == null) maze[startPos.X, startPos.Y] = new MazeRoom { Exits = (Direction)7 };
+            int northSouthWestEast = 15;
+            if (maze[startPos.X, startPos.Y] == null) maze[startPos.X, startPos.Y] = new MazeRoom { Exits = (Direction)northSouthWestEast };
             for (int row = 0; row <= maze.GetUpperBound(1); row++)
             {
                 for (int column = 0; column < maze.GetUpperBound(0); column++)
@@ -64,13 +66,14 @@ namespace Uppgift3_TheGame
             }
             Move(); //todo: cleanup
         }
-        internal static void Move()
+        private static void Move()
         {
             Position newPos = new(currentPos);
-            //Position newPos = new() { X = currentPos.X, Y = currentPos.Y };
             Console.CursorVisible = false;
+            bool noEncounter = true;
             ConsoleKeyInfo key = new();
-            while (key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Escape)
+
+            while (key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.Escape && noEncounter)
             {
                 key = Console.ReadKey(true);
                 switch (key.Key)
@@ -83,7 +86,7 @@ namespace Uppgift3_TheGame
                 }
                 if (!newPos.Equals(currentPos))
                 {
-                    newPos.Update(CheckBounds(newPos));
+                    
                     if (maze[newPos.X, newPos.Y] == null) NewRoom(newPos);
                     Console.SetCursorPosition(newPos.X + 1, newPos.Y + 1);
                     InvertColors();
@@ -93,8 +96,11 @@ namespace Uppgift3_TheGame
                     Console.Write(maze[currentPos.X, currentPos.Y].Shape);
                     currentPos.Update(newPos);
                 }
-
+                //todo: uncomment
+                //if (rng.Next(0, 10) == 9) noEncounter = false;
             }
+            //todo: fix so can call Encounter() from here 
+            //if (!noEncounter) game.Encounter();
         }
 
         private static void NewRoom(Position pos)
@@ -168,15 +174,6 @@ namespace Uppgift3_TheGame
             if (!cannotHave.HasFlag(East) && maze[pos.X + 1, pos.Y] != null && maze[pos.X + 1, pos.Y].Exits.HasFlag(West))
                 mustHave = mustHave | East;
             return mustHave;
-        }
-
-        private static Position CheckBounds(Position newPos)
-        {
-            if (newPos.X > maze.GetUpperBound(0)) newPos.X = maze.GetUpperBound(0);
-            if (newPos.X < 0) newPos.X = 0;
-            if (newPos.Y > maze.GetUpperBound(1)) newPos.Y = maze.GetUpperBound(1);
-            if (newPos.Y < 0) newPos.Y = 0;
-            return newPos;
         }
     }
 }

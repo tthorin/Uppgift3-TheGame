@@ -5,16 +5,17 @@ namespace Uppgift3_TheGame
     using System.Collections.Generic;
     using Enums;
     using static Helpers.PrintHelpers;
+    using POCO;
 
     internal static class EverShiftingMaze
     {
         private static Random rng = new();
 
-        internal static Menu GetNewRoom(Player pc, string lastMove)
+        internal static Menu GetRoomMenu(Player pc, MazeRoom room)
         {   
-            Enum.TryParse(lastMove, out Direction last);
-            Direction mustHave = ReverseDirection(last);
-            bool validRoom = false;
+            //Enum.TryParse(lastMove, out Direction last);
+            //Direction mustHave = ReverseDirection(last);
+            //bool validRoom = false;
 
             string[] roomDescriptions =
             {

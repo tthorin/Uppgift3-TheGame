@@ -4,6 +4,7 @@ namespace Uppgift3_TheGame
     using Newtonsoft.Json;
     using System;
     using static Helpers.PrintHelpers;
+    using POCO;
 
     public class Game
     {
@@ -11,10 +12,9 @@ namespace Uppgift3_TheGame
      
         private static Random rng = new();
         Monster mob;
-        Menu room;
+        Menu roomMenu;
+        MazeRoom room = new();
         string lastMove = "North";
-        
-
 
 
         public void Start()
@@ -26,9 +26,10 @@ namespace Uppgift3_TheGame
 
             while (keepPlaying && !player.GameOver)
             {
-                room = null;
-                Encounter();
-                room = EverShiftingMaze.GetNewRoom(player, lastMove);
+                room = Maze.ShowMaze();
+                roomMenu = null;
+                //Encounter();
+                roomMenu = EverShiftingMaze.GetRoomMenu(player, lastMove);
 
                 if (!player.GameOver)
                 {
@@ -45,12 +46,12 @@ namespace Uppgift3_TheGame
             bool keepPlaying = true;
             do
             {
-                room.UpdateMenuItem($"Current health: {player.CurrentHealth} / {player.MaxHealth}", 3);
+                roomMenu.UpdateMenuItem($"Current health: {player.CurrentHealth} / {player.MaxHealth}", 3);
 
                 if (mob != null) AddMobToRoomMenu();
                 else RemoveMobFromRoomMenu();
 
-                choice = room.UseMenu();
+                choice = roomMenu.UseMenu();
 
                 if (choice.StartsWith("Show")) player.ShowStats();
                 else if (choice.StartsWith("Attack")) Fight();
@@ -66,28 +67,29 @@ namespace Uppgift3_TheGame
 
         private void RemoveMobFromRoomMenu()
         {
-            room.UpdateMenuItem($"", 4);
-            if (room.MenuItems.Find(item => item.StartsWith("Attack")) != null) room.MenuItems.RemoveAt(room.MenuItems.Count - 3);
+            roomMenu.UpdateMenuItem($"", 4);
+            if (roomMenu.MenuItems.Find(item => item.StartsWith("Attack")) != null) roomMenu.MenuItems.RemoveAt(roomMenu.MenuItems.Count - 3);
         }
 
         private void AddMobToRoomMenu()
         {
-            room.UpdateMenuItem($"There's a {mob.FullName} in the room!", 4);
-            room.MenuItems.Insert(room.MenuItems.Count - 2, $"Attack {mob.Alias}.");
+            roomMenu.UpdateMenuItem($"There's a {mob.FullName} in the room!", 4);
+            roomMenu.MenuItems.Insert(roomMenu.MenuItems.Count - 2, $"Attack {mob.Alias}.");
         }
 
-        private void Encounter()
+        //todo:make private and uncomment
+        internal void Encounter()
         {
-            if (rng.Next(0, 7) > 4) BorderPrint("Amazingly, you encounter.... Nothing!");
-            else
-            {
+            //if (rng.Next(0, 7) > 4) BorderPrint("Amazingly, you encounter.... Nothing!");
+            //else
+            //{
                 mob = new Monster(player.Level);
                 BorderPrint($"You encounter a {mob.FullName}!");
                 Menu encounter = EverShiftingMaze.EncounterMenu(player, mob);
                 string choice = encounter.UseMenu();
                 if (choice == "Fight!") Fight();
                 else Flee();
-            }
+            //}
         }
 
         private void Flee()
