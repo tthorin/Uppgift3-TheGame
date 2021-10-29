@@ -10,6 +10,8 @@ namespace Uppgift3_TheGame.Helpers
 
     internal static class PrintHelpers
     {
+        private static readonly ConsoleColor background = ConsoleColor.Black;
+        private static readonly ConsoleColor foreground = ConsoleColor.Gray;
         internal static void DramaticPrint(string msg)
         {
             Console.CursorVisible = false;
@@ -76,6 +78,17 @@ namespace Uppgift3_TheGame.Helpers
             Console.WriteLine($"           ┌────────┐");
             Console.WriteLine($"───────────┤Round{round,3}├───────────────────────────────────────────────────");
             Console.WriteLine($"           └────────┘");
+        }
+        internal static void InvertColors()
+        {
+            Console.ForegroundColor = background;
+            Console.BackgroundColor = foreground;
+        }
+
+        internal static void SetColors()
+        {
+            Console.ForegroundColor = foreground;
+            Console.BackgroundColor = background;
         }
     }
 }

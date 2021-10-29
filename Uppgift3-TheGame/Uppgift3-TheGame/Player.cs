@@ -28,7 +28,6 @@ namespace Uppgift3_TheGame
             CurrentHealth = MaxHealth;
             msg.Hits = EquippedWeapon.FlavourTexts;
             msg.Blocks = EquippedArmor.FlavourTexts;
-            CurrentHealth = 5;
         }
 
         private void LevelUp(int newLevel)
