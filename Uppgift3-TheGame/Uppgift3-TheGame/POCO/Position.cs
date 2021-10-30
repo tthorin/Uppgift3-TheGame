@@ -30,5 +30,16 @@ namespace Uppgift3_TheGame.POCO
                 if (X == other.X && Y == other.Y) equal = true;
             return equal;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is not Position) return false;
+            return Equals(obj as Position);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

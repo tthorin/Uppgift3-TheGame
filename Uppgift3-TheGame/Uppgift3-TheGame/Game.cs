@@ -12,20 +12,27 @@ namespace Uppgift3_TheGame
     public class Game
     {
         private readonly Player player = new();
-
         private Monster mob;
         private Menu roomMenu;
+        private int ec;
+        private Maze maze;
+        private int EncounterChance { get => ec; set => ec = (value > 100 || value < 0) ? value > 100 ? 100 : 0 : value; }
 
+        public Game(int percentEncounterChance = 10)
+        {
+            EncounterChance = percentEncounterChance;
+            maze = new(EncounterChance);
+        }
         public void Start()
         {
+            //todo: implement boss somewhere
             player.Name = GameHelper.Intro();
-            var boss = (Player)player.Clone(); //todo: fixa boss.
             Town cave = new() { Name = "the Cave" };
             var keepPlaying = cave.Enter(player);
 
             while (keepPlaying && !player.GameOver)
             {
-                (MazeRoom room, var noEncounter) = Maze.ShowMaze();
+                (MazeRoom room, var noEncounter) = maze.ShowMaze(EncounterChance);
                 if (!noEncounter) Encounter();
                 roomMenu = null;
                 roomMenu = GameHelper.GetRoomMenu(player, room);
@@ -113,8 +120,9 @@ namespace Uppgift3_TheGame
             mob = null;
         }
 
-        private static void GameOver()
+        private void GameOver()
         {
+            if (player.Level == 10) BorderPrint("Congratulations you've reached level 10 and won the game!");
             string[] go = { "GAME OVER!", "Thanks for playing, hope you enjoyed it.", "", "Why not have another go?" };
             BorderPrint(go);
         }

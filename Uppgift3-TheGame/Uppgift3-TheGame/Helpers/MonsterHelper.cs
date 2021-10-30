@@ -38,7 +38,6 @@ namespace Uppgift3_TheGame.Helpers
             mob.Prefix = prefix[rng.Next(0, prefix.Length - 1)];
             mob.Class = className[rng.Next(0, className.Length - 1)];
             mob.Suffix = suffix[rng.Next(0, suffix.Length - 1)];
-            //todo random combat msg?
         }
     }
 }
