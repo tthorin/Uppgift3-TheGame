@@ -20,7 +20,7 @@ namespace Uppgift3_TheGame
         internal double XpToNextLevel { get; private set; } = 1;
         internal Weapon EquippedWeapon { get; private set; } = Fists;
         internal Armor EquippedArmor { get; private set; } = BirthdaySuit;
-        internal bool GameOver { get; private set; } = false;
+        internal bool Dead { get; private set; } = false;
 
         internal Player()
         {
@@ -50,8 +50,7 @@ namespace Uppgift3_TheGame
                     $"{"Damage:", -18}{Damage, 5} {"Toughness:", -15}{Toughness, 4}"
                 };
                 //todo: add msg for lvl 10 game over
-                if (Level == 10) GameOver = true;
-                else BorderPrint(lvlUp);
+                BorderPrint(lvlUp);
             }
         }
         internal void Loot((int gold, int xp) loot)
@@ -96,6 +95,7 @@ namespace Uppgift3_TheGame
         }
         internal override void Die()
         {
+            //ascii art from:https://ascii.co.uk/
             Console.WriteLine(@"                            ,--.
                            {    }
                            K,   }
@@ -120,9 +120,9 @@ namespace Uppgift3_TheGame
      \_  \          /,L]     /
        '-_~-,       ` `   ./`
           `'{_            )
-              ^^\..___,.--`(from https://ascii.co.uk/)");
+              ^^\..___,.--`");
             BorderPrint($"You fall to the ground, dead.");
-            GameOver = true;
+            Dead = true;
         }
 
         public object Clone()

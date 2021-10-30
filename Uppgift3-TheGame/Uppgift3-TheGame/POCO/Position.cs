@@ -17,7 +17,7 @@ namespace Uppgift3_TheGame.POCO
             Y = pos.Y;
         }
         internal Position() { }
-        internal void Update(Position pos)
+        internal void SetTo(Position pos)
         {
             X = pos.X;
             Y = pos.Y;

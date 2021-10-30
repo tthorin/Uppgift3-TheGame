@@ -80,7 +80,6 @@ namespace Uppgift3_TheGame
         {
             var highlightItem = menu.StartSelected;
             var userChoice = "";
-            ConsoleKeyInfo input = new();
 
             SetColors();
             Console.Clear();
@@ -88,7 +87,7 @@ namespace Uppgift3_TheGame
             do
             {
                 UpdateMenu(menu, highlightItem);
-                input = Console.ReadKey(true);
+                var input = Console.ReadKey(true);
                 switch (input.Key)
                 {
                     case ConsoleKey.LeftArrow or ConsoleKey.UpArrow:

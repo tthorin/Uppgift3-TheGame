@@ -19,7 +19,7 @@ namespace Uppgift3_TheGame.Helpers
             for (var i = 0; i < 5; i++)
             {
                 Console.Write(".");
-                Thread.Sleep(200);
+                Thread.Sleep(000); //todo: change back to 200
             }
             Console.WriteLine();
         }
@@ -36,13 +36,16 @@ namespace Uppgift3_TheGame.Helpers
             Console.WriteLine("Press any key to continue.");
             Console.ReadKey(true);
         }
-        internal static void BorderPrint(string msg)
+        internal static void BorderPrint(string msg, bool holdAtEnd = true)
         {
             Console.WriteLine($"╔{new string('═', msg.Length + 2)}╗");
             Console.WriteLine($"║ {msg} ║");
             Console.WriteLine($"╚{new string('═', msg.Length + 2)}╝");
-            Console.WriteLine("Press any key to continue.");
-            Console.ReadKey(true);
+            if (holdAtEnd)
+            {
+                Console.WriteLine("Press any key to continue.");
+                Console.ReadKey(true);
+            }
         }
         internal static void BorderPrint(string[] msg, bool holdAtEnd = true)
         {

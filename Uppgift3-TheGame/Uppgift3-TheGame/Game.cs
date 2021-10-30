@@ -14,9 +14,9 @@ namespace Uppgift3_TheGame
         private readonly Player player = new();
         private Monster mob;
         private Menu roomMenu;
-        private int ec;
+        private int encounterChance;
         private Maze maze;
-        private int EncounterChance { get => ec; set => ec = (value > 100 || value < 0) ? value > 100 ? 100 : 0 : value; }
+        private int EncounterChance { get => encounterChance; set => encounterChance = (value > 100 || value < 0) ? value > 100 ? 100 : 0 : value; }
 
         public Game(int percentEncounterChance = 10)
         {
@@ -29,17 +29,19 @@ namespace Uppgift3_TheGame
             player.Name = GameHelper.Intro();
             Town cave = new() { Name = "the Cave" };
             var keepPlaying = cave.Enter(player);
+            var changeX = 0;
+            var changeY = 0;
 
-            while (keepPlaying && !player.GameOver)
+            while (keepPlaying && !player.Dead && player.Level < 10)
             {
-                (MazeRoom room, var noEncounter) = maze.ShowMaze(EncounterChance);
+                (MazeRoom room, var noEncounter) = maze.ShowMaze(changeX,changeY);
                 if (!noEncounter) Encounter();
                 roomMenu = null;
                 roomMenu = GameHelper.GetRoomMenu(player, room);
 
-                if (!player.GameOver)
+                if (!player.Dead&&player.Level<10)
                 {
-                    keepPlaying = ShowRoom(cave);
+                    (keepPlaying,changeX,changeY) = ShowRoom(cave);
                 }
                 else
                 {
@@ -49,10 +51,10 @@ namespace Uppgift3_TheGame
         }
 
 
-        private bool ShowRoom(Town town)
+        private (bool,int,int) ShowRoom(Town town)
         {
-            var choice = "";
-            var keepPlaying = true;
+            string choice;
+            (bool keepPlaying,int changeX,int changeY) returnThis = (true,0,0);
             do
             {
                 roomMenu.UpdateMenuItem($"Current health: {player.CurrentHealth} / {player.MaxHealth}", 3);
@@ -65,11 +67,17 @@ namespace Uppgift3_TheGame
                 if (choice.StartsWith("Show")) player.ShowStats();
                 else if (choice.StartsWith("Attack")) Fight();
 
-            } while (!player.GameOver && choice != "Head back to town." && !choice.StartsWith("Go"));
+            } while (!player.Dead && choice != "Head back to town." && !choice.StartsWith("Go"));
 
-            if (choice == "Head back to town.") keepPlaying = GameHelper.PortalStone(player, town);
+            if (choice == "Head back to town.") returnThis = (GameHelper.PortalStone(player, town),0,0);
+            else
+            {
+                string lastMove = choice.Substring(choice.IndexOf(' ') + 1, choice.IndexOf('.') - (choice.IndexOf(' ') + 1));
+                returnThis.changeY = lastMove == "North" || lastMove == "South" ? lastMove == "North" ? -1 : +1 : 0;
+                returnThis.changeX = lastMove == "East" || lastMove == "West" ? lastMove == "East" ? +1 : -1 : 0;
+            }
 
-            return keepPlaying;
+            return returnThis;
         }
 
         private void RemoveMobFromRoomMenu()
@@ -113,7 +121,8 @@ namespace Uppgift3_TheGame
                 {
                     Console.WriteLine($"{player.Name}: {player.CurrentHealth} hp, {mob.Name}: {mob.CurrentHealth} hp.");
                     round++;
-                    Hold();
+                    //todo: uncomment hold()
+                    //Hold();
                 }
             }
             if (player.Alive) player.Loot(mob.Corpse());
@@ -122,7 +131,7 @@ namespace Uppgift3_TheGame
 
         private void GameOver()
         {
-            if (player.Level == 10) BorderPrint("Congratulations you've reached level 10 and won the game!");
+            if (player.Level == 10) BorderPrint("Congratulations you've reached level 10 and won the game!",false);
             string[] go = { "GAME OVER!", "Thanks for playing, hope you enjoyed it.", "", "Why not have another go?" };
             BorderPrint(go);
         }
