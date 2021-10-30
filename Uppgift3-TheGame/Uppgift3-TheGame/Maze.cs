@@ -5,36 +5,35 @@
 
 namespace Uppgift3_TheGame
 {
-    using System;
-    using System.Collections.Generic;
-    using static Enums.Direction;
     using Enums;
-    using static Helpers.PrintHelpers;
+    using System;
     using Uppgift3_TheGame.POCO;
-    
+    using static Enums.Direction;
+    using static Helpers.PrintHelpers;
+
 
     internal static class Maze
-    {   
-        static int maxWidth = Console.WindowWidth - 1;
-        static int maxHeight = Console.WindowHeight - 1;
-        static MazeRoom[,] maze = new MazeRoom[maxWidth - 2, maxHeight - 2];
-        static Position startPos = new() { X = (maxWidth - 2) / 2, Y = (maxHeight - 2) / 2 };
-        static Position currentPos = new() { X = startPos.X, Y = startPos.Y };
-        static Random rng = new();
-        static bool noEncounter = true;
-        
-        internal static (MazeRoom room,bool noEncounter) ShowMaze()
-        {   
+    {
+        private static readonly int maxWidth = Console.WindowWidth - 1;
+        private static readonly int maxHeight = Console.WindowHeight - 1;
+        private static MazeRoom[,] maze = new MazeRoom[maxWidth - 2, maxHeight - 2];
+        private static Position startPos = new() { X = (maxWidth - 2) / 2, Y = (maxHeight - 2) / 2 };
+        private static Position currentPos = new() { X = startPos.X, Y = startPos.Y };
+        private static Random rng = new();
+        private static bool noEncounter = true;
+
+        internal static (MazeRoom room, bool noEncounter) ShowMaze()
+        {
             PrintBorder();
             Console.Clear();
-            return (maze[currentPos.X, currentPos.Y],noEncounter);
+            return (maze[currentPos.X, currentPos.Y], noEncounter);
         }
         private static void PrintBorder()
         {
             noEncounter = true;
             SetColors();
             Console.Clear();
-            for (int row = 0; row < maxHeight; row++)
+            for (var row = 0; row < maxHeight; row++)
             {
                 if (row == 0) Console.WriteLine("┌" + new string('─', maxWidth - 2) + "┐");
                 else if (row > 0 && row < maxHeight - 1) Console.WriteLine("│" + new string(' ', maxWidth - 2) + "│");
@@ -46,11 +45,11 @@ namespace Uppgift3_TheGame
 
         private static void PrintMaze()
         {
-            int northSouthWestEast = 15;
+            var northSouthWestEast = 15;
             if (maze[startPos.X, startPos.Y] == null) maze[startPos.X, startPos.Y] = new MazeRoom { Exits = (Direction)northSouthWestEast };
-            for (int row = 0; row <= maze.GetUpperBound(1); row++)
+            for (var row = 0; row <= maze.GetUpperBound(1); row++)
             {
-                for (int column = 0; column < maze.GetUpperBound(0); column++)
+                for (var column = 0; column < maze.GetUpperBound(0); column++)
                 {
                     Console.SetCursorPosition(column + 1, row + 1);
                     if (maze[column, row] != null)
@@ -67,7 +66,7 @@ namespace Uppgift3_TheGame
                 }
 
             }
-            Move(); //todo: cleanup
+            Move();
         }
         private static void Move()
         {
@@ -88,7 +87,7 @@ namespace Uppgift3_TheGame
                 }
                 if (!newPos.Equals(currentPos))
                 {
-                    
+
                     if (maze[newPos.X, newPos.Y] == null) NewRoom(newPos);
                     Console.SetCursorPosition(newPos.X + 1, newPos.Y + 1);
                     InvertColors();
@@ -98,13 +97,12 @@ namespace Uppgift3_TheGame
                     Console.Write(maze[currentPos.X, currentPos.Y].Shape);
                     currentPos.Update(newPos);
                 }
-                //todo: uncomment
-                if (rng.Next(0, 10) == 9) noEncounter = false;
             }
         }
 
         private static void NewRoom(Position pos)
         {
+            if (rng.Next(0, 10) == 9) noEncounter = false;
             Direction exits = new();
             (Direction exits, int counter) cannotHave = CheckSurroundingCant(pos);
             if (cannotHave.counter == 3) exits = SingleExitRoom(cannotHave.exits);
@@ -138,25 +136,25 @@ namespace Uppgift3_TheGame
         private static (Direction cannotHave, int cannotCounter) CheckSurroundingCant(Position pos)
         {
             Direction cannotHave = new();
-            int cannotCounter = 0;
+            var cannotCounter = 0;
             if (pos.Y - 1 < 0 || (maze[pos.X, pos.Y - 1] != null && !maze[pos.X, pos.Y - 1].Exits.HasFlag(South)))
             {
-                cannotHave = cannotHave | North;
+                cannotHave |= North;
                 cannotCounter++;
             }
             if (pos.Y + 1 > maze.GetUpperBound(1) || (maze[pos.X, pos.Y + 1] != null && !maze[pos.X, pos.Y + 1].Exits.HasFlag(North)))
             {
-                cannotHave = cannotHave | South;
+                cannotHave |= South;
                 cannotCounter++;
             }
             if (pos.X - 1 < 0 || (maze[pos.X - 1, pos.Y] != null && !maze[pos.X - 1, pos.Y].Exits.HasFlag(East)))
             {
-                cannotHave = cannotHave | West;
+                cannotHave |= West;
                 cannotCounter++;
             }
             if (pos.X + 1 > maze.GetUpperBound(0) || (maze[pos.X + 1, pos.Y] != null && !maze[pos.X + 1, pos.Y].Exits.HasFlag(West)))
             {
-                cannotHave = cannotHave | East;
+                cannotHave |= East;
                 cannotCounter++;
             }
             return (cannotHave, cannotCounter);
@@ -166,13 +164,13 @@ namespace Uppgift3_TheGame
         {
             Direction mustHave = new();
             if (!cannotHave.HasFlag(North) && maze[pos.X, pos.Y - 1] != null && maze[pos.X, pos.Y - 1].Exits.HasFlag(South))
-                mustHave = mustHave | North;
+                mustHave |= North;
             if (!cannotHave.HasFlag(South) && maze[pos.X, pos.Y + 1] != null && maze[pos.X, pos.Y + 1].Exits.HasFlag(North))
-                mustHave = mustHave | South;
+                mustHave |= South;
             if (!cannotHave.HasFlag(West) && maze[pos.X - 1, pos.Y] != null && maze[pos.X - 1, pos.Y].Exits.HasFlag(East))
-                mustHave = mustHave | West;
+                mustHave |= West;
             if (!cannotHave.HasFlag(East) && maze[pos.X + 1, pos.Y] != null && maze[pos.X + 1, pos.Y].Exits.HasFlag(West))
-                mustHave = mustHave | East;
+                mustHave |= East;
             return mustHave;
         }
     }

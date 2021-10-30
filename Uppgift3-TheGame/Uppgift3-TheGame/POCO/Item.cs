@@ -1,11 +1,11 @@
-﻿namespace Uppgift3_TheGame.POCO
+﻿// -----------------------------------------------------------------------------------------------
+//  Item.cs by Thomas Thorin, Copyright (C) 2021.
+//  Published under GNU General Public License v3 (GPL-3)
+// -----------------------------------------------------------------------------------------------
+
+namespace Uppgift3_TheGame.POCO
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    
+
 
     internal class Item
     {

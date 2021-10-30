@@ -5,8 +5,8 @@
 
 namespace Uppgift3_TheGame
 {
-    using System;
     using POCO;
+    using System;
     using static Helpers.PrintHelpers;
 
     internal class Character
@@ -69,14 +69,11 @@ namespace Uppgift3_TheGame
 
         internal virtual int Attack()
         {
-            (string flavourText, int damage) result = DoRoll(true, Offense, Damage);
-            DramaticPrint($"{Alias} {result.flavourText} {result.damage} points of damage");
-            return result.damage;
+            (var flavourText, var damage) = DoRoll(true, Offense, Damage);
+            DramaticPrint($"{Alias} {flavourText} {damage} points of damage");
+            return damage;
         }
-        internal virtual void Die()
-        {
-            BorderPrint($"{Name} falls over, dead.");
-        }
+        internal virtual void Die() => BorderPrint($"{Name} falls over, dead.");
 
 
     }

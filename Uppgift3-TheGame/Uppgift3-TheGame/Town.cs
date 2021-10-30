@@ -5,9 +5,9 @@
 
 namespace Uppgift3_TheGame
 {
+    using POCO;
     using System;
     using System.Collections.Generic;
-    using POCO;
     using static Helpers.PrintHelpers;
 
     internal class Town
@@ -21,18 +21,18 @@ namespace Uppgift3_TheGame
         internal bool Enter(Player player)
         {
             Visitor = player;
-            bool leaving = false;
+            var leaving = false;
             do
             {
                 Menu townmenu = TownHelper.TownMainMenu(Name, Visitor);
-                string choice = townmenu.UseMenu();
+                var choice = townmenu.UseMenu();
                 if (choice == "Visit the inn.") VisitInn();
                 else if (choice == "Visit the equipment store.") VisitEquipmentStore();
                 else if (choice == "Show player stats.") Visitor.ShowStats();
                 else if (choice == "Exit game.")
                 {
-                    Menu sure = new Menu(new List<string> { "Exit game", "Are you sure?", "No.", "Yes." }, 1, 1);
-                    string exit = sure.UseMenu();
+                    var sure = new Menu(new List<string> { "Exit game", "Are you sure?", "No.", "Yes." }, 1, 1);
+                    var exit = sure.UseMenu();
                     if (exit == "Yes.") return false;
                 }
                 else leaving = true;
@@ -41,20 +41,20 @@ namespace Uppgift3_TheGame
             return true;
         }
 
-        private void LeaveTown()
+        private static void LeaveTown()
         {
-            string[] description = TownHelper.LeaveTownDesc;
+            var description = TownHelper.LeaveTownDesc;
             BorderPrint(description);
             Console.Clear();
         }
 
         private void VisitInn()
         {
-            int price = 3*Visitor.Level;
+            var price = 3 * Visitor.Level;
             Menu inn = TownHelper.InnMenu(Visitor, price);
-            string choice = inn.UseMenu();
+            var choice = inn.UseMenu();
             if (choice.StartsWith("Rest"))
-            {   
+            {
                 if (CanAfford(price))
                 {
                     Visitor.CurrentHealth = Visitor.MaxHealth;
@@ -67,17 +67,17 @@ namespace Uppgift3_TheGame
         private void VisitEquipmentStore()
         {
             Menu equipStore = TownHelper.GenerateEquipmentShop(priceMarkUp, Visitor.EquippedWeapon, Visitor.EquippedArmor, Visitor.Purse());
-            bool leaving = false;
+            var leaving = false;
 
             do
             {
-                string choice = equipStore.UseMenu();
+                var choice = equipStore.UseMenu();
                 if (choice == "Leave.") leaving = true;
                 if (!leaving)
                 {
-                    string buyString = choice.Substring(0, choice.IndexOf('-') - 1);
+                    var buyString = choice.Substring(0, choice.IndexOf('-') - 1);
                     Item buying = Equipment.EquipmentList.Find(item => item.Name == buyString);
-                    int price = (int)(buying.Price * priceMarkUp);
+                    var price = (int)(buying.Price * priceMarkUp);
                     if (CanAfford(price))
                     {
                         BuyItem(buying);
@@ -85,7 +85,7 @@ namespace Uppgift3_TheGame
                     equipStore.UpdateMenuItem($"Your current weapon is: {Visitor.EquippedWeapon.Name}", 2);
                     equipStore.UpdateMenuItem($"Your current armor is: {Visitor.EquippedArmor.Name}", 3);
                     equipStore.UpdateMenuItem($"You have {Visitor.Gold} gold coins in your purse.", 4);
-                    
+
                 }
 
             } while (!leaving);
@@ -93,10 +93,10 @@ namespace Uppgift3_TheGame
 
         private void BuyItem(Item item)
         {
-            int itemToBuy = item.EffectiveValue;
-            int playerWeapon = Visitor.EquippedWeapon.Damage;
-            int playerArmor = Visitor.EquippedArmor.Protection;
-            bool better = (item is Weapon) ? itemToBuy > playerWeapon : itemToBuy > playerArmor;
+            var itemToBuy = item.EffectiveValue;
+            var playerWeapon = Visitor.EquippedWeapon.Damage;
+            var playerArmor = Visitor.EquippedArmor.Protection;
+            var better = (item is Weapon) ? itemToBuy > playerWeapon : itemToBuy > playerArmor;
 
             if (!better) BorderPrint("You already have the same or better item!");
             else
@@ -112,7 +112,7 @@ namespace Uppgift3_TheGame
 
         private bool CanAfford(int price)
         {
-            bool canAfford = false;
+            var canAfford = false;
             if (price <= Visitor.Purse()) canAfford = true;
             else BorderPrint("You can't afford that! :(");
             return canAfford;

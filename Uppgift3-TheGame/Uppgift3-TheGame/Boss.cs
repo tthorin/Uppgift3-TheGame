@@ -1,13 +1,12 @@
-﻿namespace Uppgift3_TheGame
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+﻿// -----------------------------------------------------------------------------------------------
+//  Boss.cs by Thomas Thorin, Copyright (C) 2021.
+//  Published under GNU General Public License v3 (GPL-3)
+// -----------------------------------------------------------------------------------------------
 
-    internal class Boss:Player
+namespace Uppgift3_TheGame
+{
+    internal class Boss : Player
     {
-        
+
     }
 }

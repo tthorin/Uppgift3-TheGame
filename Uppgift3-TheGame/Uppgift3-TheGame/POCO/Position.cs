@@ -6,27 +6,28 @@
 namespace Uppgift3_TheGame.POCO
 {
     using System;
-    internal class Position:IEquatable<Position>
+    internal class Position : IEquatable<Position>
     {
         internal int X { get; set; }
         internal int Y { get; set; }
 
         internal Position(Position pos)
         {
-            this.X = pos.X;
-            this.Y = pos.Y;
+            X = pos.X;
+            Y = pos.Y;
         }
         internal Position() { }
         internal void Update(Position pos)
         {
-            this.X = pos.X;
-            this.Y = pos.Y;
+            X = pos.X;
+            Y = pos.Y;
         }
 
         public bool Equals(Position other)
         {
-            bool equal = false;
-            if (this.X == other.X && this.Y == other.Y) equal = true;
+            var equal = false;
+            if (other != null)
+                if (X == other.X && Y == other.Y) equal = true;
             return equal;
         }
     }

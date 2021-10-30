@@ -1,7 +1,12 @@
-﻿namespace Uppgift3_TheGame.POCO
+﻿// -----------------------------------------------------------------------------------------------
+//  CombatMessages.cs by Thomas Thorin, Copyright (C) 2021.
+//  Published under GNU General Public License v3 (GPL-3)
+// -----------------------------------------------------------------------------------------------
+
+namespace Uppgift3_TheGame.POCO
 {
     internal class CombatMessages
-    {   
+    {
         internal string[] Blocks = new string[]
         {
             "skillfully blocks",

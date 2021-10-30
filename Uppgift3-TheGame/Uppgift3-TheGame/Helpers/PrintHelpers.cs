@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------------------------------
-//  PrintHelper.cs by Thomas Thorin, Copyright (C) 2021.
+//  PrintHelpers.cs by Thomas Thorin, Copyright (C) 2021.
 //  Published under GNU General Public License v3 (GPL-3)
 // -----------------------------------------------------------------------------------------------
 
@@ -16,10 +16,10 @@ namespace Uppgift3_TheGame.Helpers
         {
             Console.CursorVisible = false;
             Console.Write(msg);
-            for (int i = 0; i < 5; i++)
+            for (var i = 0; i < 5; i++)
             {
                 Console.Write(".");
-                Thread.Sleep(200); //todo: adjust speed
+                Thread.Sleep(200);
             }
             Console.WriteLine();
         }
@@ -46,7 +46,7 @@ namespace Uppgift3_TheGame.Helpers
         }
         internal static void BorderPrint(string[] msg, bool holdAtEnd = true)
         {
-            int width = 0;
+            var width = 0;
             foreach (var line in msg)
             {
                 if (line.Length + 2 > width) width = line.Length + 2;

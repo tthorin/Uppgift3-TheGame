@@ -12,10 +12,10 @@ namespace Uppgift3_TheGame.POCO
 
     internal class MazeRoom
     {
-        public string Shape { get => GetShape(this);  } 
+        public string Shape => GetShape(this);
         public Direction Exits { get; set; } = Direction.None;
         private static string GetShape(MazeRoom room)
-        {   
+        {
             Dictionary<Direction, string> directionToString = new()
             {
                 { North, "^" },

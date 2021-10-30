@@ -1,49 +1,51 @@
-﻿
+﻿// -----------------------------------------------------------------------------------------------
+//  Game.cs by Thomas Thorin, Copyright (C) 2021.
+//  Published under GNU General Public License v3 (GPL-3)
+// -----------------------------------------------------------------------------------------------
+
 namespace Uppgift3_TheGame
 {
-    using Newtonsoft.Json;
+    using POCO;
     using System;
     using static Helpers.PrintHelpers;
-    using POCO;
 
     public class Game
     {
-        private Player player = new() { Name = "Nisse" };
+        private readonly Player player = new();
 
-        private static Random rng = new();
-        Monster mob;
-        Menu roomMenu;
-        //MazeRoom room = new();
-        string lastMove = "North";
-
+        private Monster mob;
+        private Menu roomMenu;
 
         public void Start()
         {
             player.Name = GameHelper.Intro();
-            Player boss = (Player)player.Clone(); //todo: fixa boss.
+            var boss = (Player)player.Clone(); //todo: fixa boss.
             Town cave = new() { Name = "the Cave" };
-            bool keepPlaying = cave.Enter(player);
+            var keepPlaying = cave.Enter(player);
 
             while (keepPlaying && !player.GameOver)
             {
-                (MazeRoom room, bool noEncounter) mazeReturn = Maze.ShowMaze();
-                if (!mazeReturn.noEncounter) Encounter();
+                (MazeRoom room, var noEncounter) = Maze.ShowMaze();
+                if (!noEncounter) Encounter();
                 roomMenu = null;
-                roomMenu = GameHelper.GetRoomMenu(player, mazeReturn.room);
+                roomMenu = GameHelper.GetRoomMenu(player, room);
 
                 if (!player.GameOver)
                 {
                     keepPlaying = ShowRoom(cave);
                 }
-                else GameOver();
+                else
+                {
+                    GameOver();
+                }
             }
         }
 
 
         private bool ShowRoom(Town town)
         {
-            string choice = "";
-            bool keepPlaying = true;
+            var choice = "";
+            var keepPlaying = true;
             do
             {
                 roomMenu.UpdateMenuItem($"Current health: {player.CurrentHealth} / {player.MaxHealth}", 3);
@@ -59,8 +61,6 @@ namespace Uppgift3_TheGame
             } while (!player.GameOver && choice != "Head back to town." && !choice.StartsWith("Go"));
 
             if (choice == "Head back to town.") keepPlaying = GameHelper.PortalStone(player, town);
-
-            else lastMove = choice.Substring(choice.IndexOf(' ') + 1, choice.IndexOf('.') - (choice.IndexOf(' ') + 1));
 
             return keepPlaying;
         }
@@ -82,7 +82,7 @@ namespace Uppgift3_TheGame
             mob = new Monster(player.Level);
             BorderPrint($"You encounter a {mob.FullName}!");
             Menu encounter = GameHelper.EncounterMenu(player, mob);
-            string choice = encounter.UseMenu();
+            var choice = encounter.UseMenu();
             if (choice == "Fight!") Fight();
             else Flee();
         }
@@ -96,7 +96,7 @@ namespace Uppgift3_TheGame
 
         private void Fight()
         {
-            int round = 1;
+            var round = 1;
             while (player.Alive && mob.Alive)
             {
                 CombatRoundPrint(round);

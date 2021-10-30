@@ -1,15 +1,19 @@
-﻿
+﻿// -----------------------------------------------------------------------------------------------
+//  GameHelper.cs by Thomas Thorin, Copyright (C) 2021.
+//  Published under GNU General Public License v3 (GPL-3)
+// -----------------------------------------------------------------------------------------------
+
 namespace Uppgift3_TheGame
 {
+    using Enums;
+    using POCO;
     using System;
     using System.Collections.Generic;
-    using Enums;
     using static Helpers.PrintHelpers;
-    using POCO;
 
     internal static class GameHelper
     {
-        static Random rng = new();
+        private static Random rng = new();
 
         internal static Menu GetRoomMenu(Player pc, MazeRoom room)
         {
@@ -41,18 +45,8 @@ namespace Uppgift3_TheGame
             roomList.Add("Show player stats.");
             roomList.Add("Head back to town.");
 
-            Menu roomMenu = new Menu(roomList, 2, 3);
+            var roomMenu = new Menu(roomList, 2, 3);
             return roomMenu;
-        }
-
-        private static Direction ReverseDirection(Direction last)
-        {
-            Direction reversed = Direction.None;
-            if (last == Direction.North) reversed = Direction.South;
-            else if (last == Direction.South) reversed = Direction.North;
-            else if (last == Direction.East) reversed = Direction.West;
-            else reversed = Direction.East;
-            return reversed;
         }
 
         internal static Menu EncounterMenu(Player pc, Monster mob)
@@ -65,7 +59,7 @@ namespace Uppgift3_TheGame
                 "Fight!",
                 "Flee!"
             };
-            Menu encounterMenu = new Menu(encounterList, 1, 2);
+            var encounterMenu = new Menu(encounterList, 1, 2);
             return encounterMenu;
         }
         internal static bool PortalStone(Player pc, Town town)
@@ -76,7 +70,7 @@ namespace Uppgift3_TheGame
                         "You step trough and find yourself back in \"town\"."
                     };
             BorderPrint(portalStone);
-            bool keepPlaying = town.Enter(pc);
+            var keepPlaying = town.Enter(pc);
             return keepPlaying;
         }
         internal static string Intro()

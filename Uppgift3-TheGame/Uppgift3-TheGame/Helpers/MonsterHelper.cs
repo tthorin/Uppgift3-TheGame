@@ -6,14 +6,10 @@
 namespace Uppgift3_TheGame.Helpers
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     internal static class MonsterHelper
     {
-        static Random rng = new();
+        private static Random rng = new();
         internal static void RandomizeMonster(Monster mob)
         {
             string[] prefix =

@@ -78,8 +78,8 @@ namespace Uppgift3_TheGame
 
         private static string DoMenu(Menu menu)
         {
-            int highlightItem = menu.StartSelected;
-            string userChoice = "";
+            var highlightItem = menu.StartSelected;
+            var userChoice = "";
             ConsoleKeyInfo input = new();
 
             SetColors();
@@ -136,7 +136,7 @@ namespace Uppgift3_TheGame
         private static void SetupPrintables(Menu menu)
         {
             menu.menuwidth = menu.HelpText.Length;
-            foreach (string item in menu.MenuItems)
+            foreach (var item in menu.MenuItems)
             {
                 if (item.Length > menu.menuwidth) menu.menuwidth = item.Length;
             }
@@ -153,7 +153,7 @@ namespace Uppgift3_TheGame
 
             Console.WriteLine(menu.topLine);
 
-            for (int row = 0; row < menu.MenuItems.Count; row++)
+            for (var row = 0; row < menu.MenuItems.Count; row++)
             {
                 if (row == highlightItem)
                 {
@@ -166,7 +166,7 @@ namespace Uppgift3_TheGame
                 else
                 {
                     Console.WriteLine($"║" + menu.MenuItems[row].PadRight(menu.menuwidth) + "║");
-                    if (row == menu.HeaderLines - 1 || row == (menu.HeaderLines + menu.InfoLines) - 1) Console.WriteLine(menu.midLine);
+                    if (row == menu.HeaderLines - 1 || row == menu.HeaderLines + menu.InfoLines - 1) Console.WriteLine(menu.midLine);
                 }
             }
             Console.WriteLine(menu.bottomLine);
