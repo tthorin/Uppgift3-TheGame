@@ -113,12 +113,8 @@ namespace Uppgift3_TheGame
         internal static void BossFight(Player player)
         {
             player.CurrentHealth = player.MaxHealth;
-            Player boss = (Player)player.Clone();
-            player.Offense = 17;
-            player.Defense = 17;
-            player.ShowStats();
+            Player boss = player.Clone();
             SetUpBoss(boss);
-            boss.ShowStats();
             var round = 1;
             while (player.Alive && boss.Alive)
             {
@@ -142,10 +138,10 @@ namespace Uppgift3_TheGame
 
         private static void SetUpBoss(Player boss)
         {
-            //boss.Name = "The Dungeon Lord";
+            boss.Name = "The Dungeon Lord";
             boss.Alias = "The Dungeon Lord";
-            //boss.EquipWeapon(Equipment.BossWeapon);
-            //boss.EquipArmor(Equipment.BossArmor);
+            boss.EquipWeapon(Equipment.BossWeapon);
+            boss.EquipArmor(Equipment.BossArmor);
             boss.DeathScene = new Player.Scene(BossDeath);
             boss.Defense = 15;
             boss.Offense = 15;

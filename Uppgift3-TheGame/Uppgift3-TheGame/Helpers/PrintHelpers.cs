@@ -19,7 +19,7 @@ namespace Uppgift3_TheGame.Helpers
             for (var i = 0; i < 5; i++)
             {
                 Console.Write(".");
-                Thread.Sleep(000); //todo: change back to 200
+                Thread.Sleep(200);
             }
             Console.WriteLine();
         }

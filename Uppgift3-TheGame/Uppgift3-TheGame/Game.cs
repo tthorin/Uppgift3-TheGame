@@ -24,8 +24,7 @@ namespace Uppgift3_TheGame
             maze = new(EncounterChance);
         }
         public void Start()
-        {
-            //todo: implement boss somewhere
+        {   
             player.Name = GameHelper.Intro();
             Town cave = new() { Name = "the Cave" };
             var keepPlaying = cave.Enter(player);
@@ -121,8 +120,6 @@ namespace Uppgift3_TheGame
                 {
                     Console.WriteLine($"{player.Name}: {player.CurrentHealth} hp, {mob.Name}: {mob.CurrentHealth} hp.");
                     round++;
-                    //todo: uncomment hold()
-                    //Hold();
                 }
             }
             if (player.Alive) player.Loot(mob.Corpse());

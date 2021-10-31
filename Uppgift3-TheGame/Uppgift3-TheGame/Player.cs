@@ -12,11 +12,11 @@ namespace Uppgift3_TheGame
     using static POCO.Equipment;
 
 
-    internal class Player : Character, ICloneable
+    internal class Player : Character
     {
-        internal int Level { get; private set; } = 0;
+        public int Level { get; set; } = 0;
         internal int Xp { get; private set; } = 0;
-        
+
         internal double XpToNextLevel { get; private set; } = 1;
         internal Weapon EquippedWeapon { get; private set; } = Fists;
         internal Armor EquippedArmor { get; private set; } = BirthdaySuit;
@@ -32,25 +32,14 @@ namespace Uppgift3_TheGame
             msg.Hits = EquippedWeapon.FlavourTexts;
             msg.Blocks = EquippedArmor.FlavourTexts;
             DeathScene = new Scene(PlayerDeath);
-            //todo: remove below
-            Level = 9;
-            XpToNextLevel = 1;
-            Damage = 55;
-            Offense = 19;
-            Defense = 19;
-            Toughness = 46;
-            MaxHealth = 550;
-            CurrentHealth = MaxHealth;
-            EquipArmor(PowerArmor);
-            EquipWeapon(MagicSword);
         }
 
         private void LevelUp(int newLevel)
         {
             XpToNextLevel = Math.Ceiling(XpToNextLevel * 1.5);
             Xp = 0;
-            Offense++;
-            Defense++;
+            Offense= Offense==17?Offense=17:Offense++;
+            Defense = Defense==17?Defense = 17:Defense++;
             MaxHealth += 50;
             Damage = 10 + (newLevel * 5) + EquippedWeapon.Damage;
             Toughness = 10 + (newLevel * 4) + EquippedArmor.Protection;
@@ -88,7 +77,7 @@ namespace Uppgift3_TheGame
         internal void EquipArmor(Armor armor)
         {
             EquippedArmor = armor;
-            Toughness = 10 + (Level * 5) + armor.Protection;
+            Toughness = 10 + (Level * 4) + armor.Protection;
             msg.Blocks = armor.FlavourTexts;
         }
         internal int Purse() => Gold;
@@ -113,11 +102,15 @@ namespace Uppgift3_TheGame
             Dead = true;
         }
 
-        public object Clone()
-        {   
-            Player copy = (Player)this.MemberwiseClone();
+        public Player Clone()
+        {
+            var clone = JsonConvert.SerializeObject(this);
+            Console.WriteLine(clone);
+            Player copy = JsonConvert.DeserializeObject<Player>(clone);
+
             return copy;
         }
+        
         private void PlayerDeath()
         {
             //ascii art from:https://ascii.co.uk/
