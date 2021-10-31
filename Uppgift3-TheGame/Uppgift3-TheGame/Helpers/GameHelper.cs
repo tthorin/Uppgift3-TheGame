@@ -91,5 +91,65 @@ namespace Uppgift3_TheGame
             return Console.ReadLine().Trim();
         }
 
+        internal static Menu EndGameMenu()
+        {
+            List<string> endGameList = new()
+            {
+                "Congratulations! You beat the game!",
+                "You could either bask in the glory of knowing you are the Dungeon Lord's",
+                "most elite minion or......",
+                "Why not challenge the Dungeon Lord and become the ruler yourself....",
+                "",
+                "You feel that you are at full health and ready for anything.",
+                "What are you going to do?",
+                "Of course I deserve to be the ruler! (Challenge Dungeon Lord)",
+                "Quit while I'm ahead. (Exit game)"
+            };
+            Menu endGameMenu = new(endGameList, 1, 6);
+            return endGameMenu;
+
+        }
+
+        internal static void BossFight(Player player)
+        {
+            player.CurrentHealth = player.MaxHealth;
+            Player boss = (Player)player.Clone();
+            player.Offense = 17;
+            player.Defense = 17;
+            player.ShowStats();
+            SetUpBoss(boss);
+            boss.ShowStats();
+            var round = 1;
+            while (player.Alive && boss.Alive)
+            {
+                CombatRoundPrint(round);
+                boss.TakeDamage(player.Attack());
+                if (boss.Alive) player.TakeDamage(boss.Attack());
+                if (boss.Alive && player.Alive)
+                {
+                    Console.WriteLine($"{player.Name}: {player.CurrentHealth} hp, {boss.Name}: {boss.CurrentHealth} hp.");
+                    round++;
+                    Hold();
+                }
+            }
+        }
+        private static void BossDeath()
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            BorderPrint("The Dungeon Lord is DEAD!, ALL HAIL THE DUNGEON LORD!");
+            SetColors();
+        }
+
+        private static void SetUpBoss(Player boss)
+        {
+            //boss.Name = "The Dungeon Lord";
+            boss.Alias = "The Dungeon Lord";
+            //boss.EquipWeapon(Equipment.BossWeapon);
+            //boss.EquipArmor(Equipment.BossArmor);
+            boss.DeathScene = new Player.Scene(BossDeath);
+            boss.Defense = 15;
+            boss.Offense = 15;
+        }
     }
+
 }

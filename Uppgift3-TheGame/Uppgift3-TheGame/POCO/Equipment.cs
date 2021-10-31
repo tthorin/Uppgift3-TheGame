@@ -174,6 +174,31 @@ namespace Uppgift3_TheGame.POCO
         internal static List<Armor> ArmorList = new() { Cloth, Leather, Chainmail, Plate, PowerArmor };
         #endregion Armor
         internal static List<Item> EquipmentList = new() { Stick, Dagger, Sword, GreatAxe, MagicSword, Cloth, Leather, Chainmail, Plate, PowerArmor };
-
+        internal static Armor BossArmor = new()
+        {
+            Name = "Boss armor",
+            Protection = 40,
+            Price = 500,
+            FlavourTexts = new string[4]
+            {
+                 "expertly parries your blow, blocking",
+                 "almost disarms you with and amazing parry, blocking",
+                 "looks pained as you find a chink in his defenses, only blocking",
+                 "is completly suprised by your attack, avoiding a grand total of"
+            }
+        };
+        internal static Weapon BossWeapon = new()
+        {
+            Name = "Boss sword",
+            Damage = 40,
+            Price = 500,
+            FlavourTexts = new string[4]
+            {
+                "grins wickedly as his flaming swords bites into you for",
+                "yells triumphantly as he proceeds to carve you up with his flaming sword, inflicting",
+                "grimaces as he misjudges his blow and only does",
+                "is blinded by your awesomeness and does"
+            }
+        };
     }
 }

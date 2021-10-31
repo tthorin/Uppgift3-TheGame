@@ -131,9 +131,18 @@ namespace Uppgift3_TheGame
 
         private void GameOver()
         {
-            if (player.Level == 10) BorderPrint("Congratulations you've reached level 10 and won the game!",false);
+            if (player.Level == 10)
+            {
+                BorderPrint("Congratulations you've reached level 10 and won the game!");
+                Menu endgame = GameHelper.EndGameMenu();
+                string choice = endgame.UseMenu();
+                if (choice == "Of course I deserve to be the ruler! (Challenge Dungeon Lord)") GameHelper.BossFight(player);
+
+            }
             string[] go = { "GAME OVER!", "Thanks for playing, hope you enjoyed it.", "", "Why not have another go?" };
             BorderPrint(go);
         }
+
+        
     }
 }

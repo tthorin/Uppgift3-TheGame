@@ -16,18 +16,33 @@ namespace Uppgift3_TheGame
     {
         internal int Level { get; private set; } = 0;
         internal int Xp { get; private set; } = 0;
-        internal override string Alias => "You";
+        
         internal double XpToNextLevel { get; private set; } = 1;
         internal Weapon EquippedWeapon { get; private set; } = Fists;
         internal Armor EquippedArmor { get; private set; } = BirthdaySuit;
         internal bool Dead { get; private set; } = false;
+        internal delegate void Scene();
+        internal Scene DeathScene;
 
         internal Player()
         {
+            Alias = "You";
             LevelUp(++Level);
             CurrentHealth = MaxHealth;
             msg.Hits = EquippedWeapon.FlavourTexts;
             msg.Blocks = EquippedArmor.FlavourTexts;
+            DeathScene = new Scene(PlayerDeath);
+            //todo: remove below
+            Level = 9;
+            XpToNextLevel = 1;
+            Damage = 55;
+            Offense = 19;
+            Defense = 19;
+            Toughness = 46;
+            MaxHealth = 550;
+            CurrentHealth = MaxHealth;
+            EquipArmor(PowerArmor);
+            EquipWeapon(MagicSword);
         }
 
         private void LevelUp(int newLevel)
@@ -49,7 +64,6 @@ namespace Uppgift3_TheGame
                     $"{"Offense:", -18}{Offense,5} {"Defense:", -15}{Defense, 4}",
                     $"{"Damage:", -18}{Damage, 5} {"Toughness:", -15}{Toughness, 4}"
                 };
-                //todo: add msg for lvl 10 game over
                 BorderPrint(lvlUp);
             }
         }
@@ -95,6 +109,17 @@ namespace Uppgift3_TheGame
         }
         internal override void Die()
         {
+            DeathScene();
+            Dead = true;
+        }
+
+        public object Clone()
+        {   
+            Player copy = (Player)this.MemberwiseClone();
+            return copy;
+        }
+        private void PlayerDeath()
+        {
             //ascii art from:https://ascii.co.uk/
             Console.WriteLine(@"                            ,--.
                            {    }
@@ -122,14 +147,6 @@ namespace Uppgift3_TheGame
           `'{_            )
               ^^\..___,.--`");
             BorderPrint($"You fall to the ground, dead.");
-            Dead = true;
-        }
-
-        public object Clone()
-        {
-            var clone = JsonConvert.SerializeObject(this);
-            Player copy = JsonConvert.DeserializeObject<Player>(clone);
-            return copy;
         }
     }
 }

@@ -44,7 +44,10 @@ namespace Uppgift3_TheGame
         private static void LeaveTown()
         {
             var description = TownHelper.LeaveTownDesc;
-            BorderPrint(description);
+            BorderPrint(description,false);
+            Console.ForegroundColor = ConsoleColor.Blue;
+            PrintAndHold("Only unexplored rooms can contain monsters...");
+            SetColors();
             Console.Clear();
         }
 
