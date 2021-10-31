@@ -38,8 +38,8 @@ namespace Uppgift3_TheGame
         {
             XpToNextLevel = Math.Ceiling(XpToNextLevel * 1.5);
             Xp = 0;
-            Offense= Offense==17?Offense=17:Offense++;
-            Defense = Defense==17?Defense = 17:Defense++;
+            Offense= Offense==17?Offense=17:++Offense;
+            Defense = Defense==17?Defense = 17:++Defense;
             MaxHealth += 50;
             Damage = 10 + (newLevel * 5) + EquippedWeapon.Damage;
             Toughness = 10 + (newLevel * 4) + EquippedArmor.Protection;

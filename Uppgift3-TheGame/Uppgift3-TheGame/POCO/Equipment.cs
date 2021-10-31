@@ -44,7 +44,7 @@ namespace Uppgift3_TheGame.POCO
             FlavourTexts = new string[4]
             {
                 "stick the enemy with your dagger for",
-                "stab the enemy in its vunerables with your dagger, doing ",
+                "stab the enemy in its vunerables with your dagger, doing",
                 "scratch the enemy with your dagger for",
                 "drop your dagger to the ground, doing"
             }

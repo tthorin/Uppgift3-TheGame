@@ -26,15 +26,19 @@ namespace Uppgift3_TheGame
 
         protected static Random rng = new();
 
-        internal virtual bool TakeDamage(int damage)
+        internal virtual bool TakeDamage(int damage,bool playerActing)
         {
             (string msg, int blocked) result = DoRoll(false, Defense, Toughness);
 
             damage = damage - result.blocked < 0 ? 0 : damage - result.blocked;
             CurrentHealth -= damage;
 
+            if (playerActing) Console.ForegroundColor = ConsoleColor.Green;
+            else Console.ForegroundColor = ConsoleColor.Red;
             DramaticPrint($"{Alias} {result.msg} {result.blocked} damage");
-            Console.WriteLine($"{Alias} takes {damage} points of damage ({CurrentHealth}/{MaxHealth})");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"{Alias} {(playerActing?"take": "takes")} {damage} points of damage ({CurrentHealth}/{MaxHealth})");
+            SetColors();
             Console.WriteLine();
 
             if (CurrentHealth <= 0)
@@ -67,10 +71,13 @@ namespace Uppgift3_TheGame
             return result;
         }
 
-        internal virtual int Attack()
+        internal virtual int Attack(bool playerActing)
         {
             (var flavourText, var damage) = DoRoll(true, Offense, Damage);
+            if (playerActing) Console.ForegroundColor = ConsoleColor.Green;
+            else Console.ForegroundColor = ConsoleColor.Red;
             DramaticPrint($"{Alias} {flavourText} {damage} points of damage");
+            SetColors();
             return damage;
         }
         internal virtual void Die() => BorderPrint($"{Name} falls over, dead.");

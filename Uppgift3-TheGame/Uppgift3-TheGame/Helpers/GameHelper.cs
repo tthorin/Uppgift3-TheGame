@@ -119,8 +119,8 @@ namespace Uppgift3_TheGame
             while (player.Alive && boss.Alive)
             {
                 CombatRoundPrint(round);
-                boss.TakeDamage(player.Attack());
-                if (boss.Alive) player.TakeDamage(boss.Attack());
+                boss.TakeDamage(player.Attack(true),false);
+                if (boss.Alive) player.TakeDamage(boss.Attack(false),true);
                 if (boss.Alive && player.Alive)
                 {
                     Console.WriteLine($"{player.Name}: {player.CurrentHealth} hp, {boss.Name}: {boss.CurrentHealth} hp.");
@@ -143,8 +143,8 @@ namespace Uppgift3_TheGame
             boss.EquipWeapon(Equipment.BossWeapon);
             boss.EquipArmor(Equipment.BossArmor);
             boss.DeathScene = new Player.Scene(BossDeath);
-            boss.Defense = 15;
-            boss.Offense = 15;
+            boss.Defense = 14;
+            boss.Offense = 14;
         }
     }
 

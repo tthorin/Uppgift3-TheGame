@@ -94,7 +94,9 @@ namespace Uppgift3_TheGame
         private void Encounter()
         {
             mob = new Monster(player.Level);
+            Console.ForegroundColor = ConsoleColor.Red;
             BorderPrint($"You encounter a {mob.FullName}!");
+            SetColors();
             Menu encounter = GameHelper.EncounterMenu(player, mob);
             var choice = encounter.UseMenu();
             if (choice == "Fight!") Fight();
@@ -104,7 +106,7 @@ namespace Uppgift3_TheGame
         private void Flee()
         {
             BorderPrint($"As you turn and flee like a chicken, {mob.Alias} hits you in the back!");
-            player.TakeDamage(mob.Attack());
+            player.TakeDamage(mob.Attack(false),true);
             Hold();
         }
 
@@ -114,11 +116,13 @@ namespace Uppgift3_TheGame
             while (player.Alive && mob.Alive)
             {
                 CombatRoundPrint(round);
-                mob.TakeDamage(player.Attack());
-                if (mob.Alive) player.TakeDamage(mob.Attack());
+                mob.TakeDamage(player.Attack(true),false);
+                if (mob.Alive) player.TakeDamage(mob.Attack(false),true);
                 if (mob.Alive && player.Alive)
                 {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.WriteLine($"{player.Name}: {player.CurrentHealth} hp, {mob.Name}: {mob.CurrentHealth} hp.");
+                    SetColors();
                     round++;
                     Hold();
                 }
