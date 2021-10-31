@@ -5,37 +5,41 @@
 
 namespace Uppgift3_TheGame
 {
-    using System;
     using Newtonsoft.Json;
     using POCO;
+    using System;
     using static Helpers.PrintHelpers;
     using static POCO.Equipment;
-    
 
-    internal class Player : Character,ICloneable
+
+    internal class Player : Character
     {
-        internal int Level { get; private set; } = 0;
+        public int Level { get; set; } = 0;
         internal int Xp { get; private set; } = 0;
-        internal override string Alias { get => "You"; }
+
         internal double XpToNextLevel { get; private set; } = 1;
         internal Weapon EquippedWeapon { get; private set; } = Fists;
         internal Armor EquippedArmor { get; private set; } = BirthdaySuit;
-        internal bool GameOver { get; private set; } = false;
+        internal bool Dead { get; private set; } = false;
+        internal delegate void Scene();
+        internal Scene DeathScene;
 
         internal Player()
         {
+            Alias = "You";
             LevelUp(++Level);
             CurrentHealth = MaxHealth;
             msg.Hits = EquippedWeapon.FlavourTexts;
             msg.Blocks = EquippedArmor.FlavourTexts;
+            DeathScene = new Scene(PlayerDeath);
         }
 
         private void LevelUp(int newLevel)
         {
             XpToNextLevel = Math.Ceiling(XpToNextLevel * 1.5);
             Xp = 0;
-            Offense++;
-            Defense++;
+            Offense= Offense==17?Offense=17:Offense++;
+            Defense = Defense==17?Defense = 17:Defense++;
             MaxHealth += 50;
             Damage = 10 + (newLevel * 5) + EquippedWeapon.Damage;
             Toughness = 10 + (newLevel * 4) + EquippedArmor.Protection;
@@ -44,14 +48,12 @@ namespace Uppgift3_TheGame
                 string[] lvlUp =
                 {
                     "DING!",
-                    "You leveled up!",
-                    $"{"Xp to next level:", -18}{Xp, 5} {"New maxhealth:", -15}{MaxHealth, 4}",
-                    $"{"Offense:", -18}{Xp,5} {"Defense:", -15}{Defense, 4}",
-                    $"{"Damage:", -18}{Xp, 5} {"Toughness:", -15}{Toughness, 4}"
+                    $"{"You leveled up!",-23} {"New Level:", -15}{Level, 4}",
+                    $"{"Xp to next level:", -18}{XpToNextLevel, 5} {"New maxhealth:", -15}{MaxHealth, 4}",
+                    $"{"Offense:", -18}{Offense,5} {"Defense:", -15}{Defense, 4}",
+                    $"{"Damage:", -18}{Damage, 5} {"Toughness:", -15}{Toughness, 4}"
                 };
-                //todo: add msg for lvl 10 game over
-                if (Level == 10) GameOver = true;
-                else BorderPrint(lvlUp);
+                BorderPrint(lvlUp);
             }
         }
         internal void Loot((int gold, int xp) loot)
@@ -69,23 +71,17 @@ namespace Uppgift3_TheGame
         internal void EquipWeapon(Weapon weapon)
         {
             EquippedWeapon = weapon;
-            Damage = 10 + Level * 5 + weapon.Damage;
+            Damage = 10 + (Level * 5) + weapon.Damage;
             msg.Hits = weapon.FlavourTexts;
         }
         internal void EquipArmor(Armor armor)
         {
             EquippedArmor = armor;
-            Toughness = 10 + Level * 5 + armor.Protection;
+            Toughness = 10 + (Level * 4) + armor.Protection;
             msg.Blocks = armor.FlavourTexts;
         }
-        internal int Purse()
-        {
-            return Gold;
-        }
-        internal void Pay(int price)
-        {
-            Gold -= price;
-        }
+        internal int Purse() => Gold;
+        internal void Pay(int price) => Gold -= price;
         internal void ShowStats()
         {
             string[] stats =
@@ -102,6 +98,22 @@ namespace Uppgift3_TheGame
         }
         internal override void Die()
         {
+            DeathScene();
+            Dead = true;
+        }
+
+        public Player Clone()
+        {
+            var clone = JsonConvert.SerializeObject(this);
+            Console.WriteLine(clone);
+            Player copy = JsonConvert.DeserializeObject<Player>(clone);
+
+            return copy;
+        }
+        
+        private void PlayerDeath()
+        {
+            //ascii art from:https://ascii.co.uk/
             Console.WriteLine(@"                            ,--.
                            {    }
                            K,   }
@@ -126,16 +138,8 @@ namespace Uppgift3_TheGame
      \_  \          /,L]     /
        '-_~-,       ` `   ./`
           `'{_            )
-              ^^\..___,.--`(from https://ascii.co.uk/)"); 
+              ^^\..___,.--`");
             BorderPrint($"You fall to the ground, dead.");
-            GameOver = true;
-        }
-
-        public object Clone()
-        {
-            var clone = JsonConvert.SerializeObject(this);
-            var copy = JsonConvert.DeserializeObject<Player>(clone);
-            return copy;
         }
     }
 }

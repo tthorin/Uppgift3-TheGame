@@ -7,7 +7,6 @@ namespace Uppgift3_TheGame.POCO
 {
     using System.Collections.Generic;
     using static POCO.Equipment;
-    using static Helpers.PrintHelpers;
 
     internal static class TownHelper
     {

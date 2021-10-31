@@ -6,14 +6,10 @@
 namespace Uppgift3_TheGame.Helpers
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     internal static class MonsterHelper
     {
-        static Random rng = new();
+        private static Random rng = new();
         internal static void RandomizeMonster(Monster mob)
         {
             string[] prefix =
@@ -33,16 +29,15 @@ namespace Uppgift3_TheGame.Helpers
             };
             string[] name =
             {
-                "Artemis","Bertram", "Charlene","Devon","Elric","Froro","Gandulf","Hemingway","Ivan","Joar","Kalle","Lama",
+                "Artemis","Bertram", "Charlene","Devon","Elric","Froro","Gandulf","Hemingway","Ivan","Joar","Kallé","Lama",
                 "Morrow","Nisse","Oliphant","Petrus","Quentin","Romeo","Sierra","Tord","Ulvar","Vanilj","Whodunnit","Xerxes",
                 "Yrrol","Zentharim"
             };
 
-            mob.Name = name[rng.Next(0, name.Length - 1)];
-            mob.Prefix = prefix[rng.Next(0, prefix.Length - 1)];
-            mob.Class = className[rng.Next(0, className.Length - 1)];
-            mob.Suffix = suffix[rng.Next(0, suffix.Length - 1)];
-            //todo random combat msg?
+            mob.Name = name[rng.Next(0, name.Length)];
+            mob.Prefix = prefix[rng.Next(0, prefix.Length)];
+            mob.Class = className[rng.Next(0, className.Length)];
+            mob.Suffix = suffix[rng.Next(0, suffix.Length)];
         }
     }
 }

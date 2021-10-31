@@ -5,8 +5,8 @@
 
 namespace Uppgift3_TheGame
 {
-    using System;
     using POCO;
+    using System;
     using static Helpers.PrintHelpers;
 
     internal class Character
@@ -14,12 +14,12 @@ namespace Uppgift3_TheGame
         protected CombatMessages msg = new();
         internal string Name { get; set; } = "";
         internal virtual string Alias { get; set; } = "";
-        internal int MaxHealth { get; set; } = 100;
-        internal int CurrentHealth { get; set; } = 100;
-        internal int Offense { get; set; } = 10;
-        internal int Defense { get; set; } = 10;
-        internal int Damage { get; set; } = 25;
-        internal int Toughness { get; set; } = 10;
+        public int MaxHealth { get; set; } = 100;
+        public int CurrentHealth { get; set; } = 100;
+        public int Offense { get; set; } = 10;
+        public int Defense { get; set; } = 10;
+        public int Damage { get; set; } = 25;
+        public int Toughness { get; set; } = 10;
         internal int Gold { get; set; } = 0;
         internal bool Alive { get; set; } = true;
 
@@ -69,14 +69,11 @@ namespace Uppgift3_TheGame
 
         internal virtual int Attack()
         {
-            (string flavourText, int damage) result = DoRoll(true, Offense, Damage);
-            DramaticPrint($"{Alias} {result.flavourText} {result.damage} points of damage");
-            return result.damage;
+            (var flavourText, var damage) = DoRoll(true, Offense, Damage);
+            DramaticPrint($"{Alias} {flavourText} {damage} points of damage");
+            return damage;
         }
-        internal virtual void Die()
-        {
-            BorderPrint($"{Name} falls over, dead.");
-        }
+        internal virtual void Die() => BorderPrint($"{Name} falls over, dead.");
 
 
     }

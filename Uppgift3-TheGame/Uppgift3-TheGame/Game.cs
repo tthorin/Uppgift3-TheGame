@@ -1,49 +1,59 @@
-﻿
+﻿// -----------------------------------------------------------------------------------------------
+//  Game.cs by Thomas Thorin, Copyright (C) 2021.
+//  Published under GNU General Public License v3 (GPL-3)
+// -----------------------------------------------------------------------------------------------
+
 namespace Uppgift3_TheGame
 {
-    using Newtonsoft.Json;
+    using POCO;
     using System;
     using static Helpers.PrintHelpers;
-    using POCO;
 
     public class Game
     {
-        private Player player = new() { Name = "Nisse" };
-     
-        private static Random rng = new();
-        Monster mob;
-        Menu roomMenu;
-        MazeRoom room = new();
-        string lastMove = "North";
+        private readonly Player player = new();
+        private Monster mob;
+        private Menu roomMenu;
+        private int encounterChance;
+        private Maze maze;
+        private int EncounterChance { get => encounterChance; set => encounterChance = (value > 100 || value < 0) ? value > 100 ? 100 : 0 : value; }
 
-
-        public void Start()
+        public Game(int percentEncounterChance = 10)
         {
-            player.Name = EverShiftingMaze.Intro();
-            Player boss = (Player)player.Clone(); //todo: fixa boss.
+            EncounterChance = percentEncounterChance;
+            maze = new(EncounterChance);
+        }
+        public void Start()
+        {   
+            player.Name = GameHelper.Intro();
             Town cave = new() { Name = "the Cave" };
-            bool keepPlaying = cave.Enter(player);
+            var keepPlaying = cave.Enter(player);
+            var changeX = 0;
+            var changeY = 0;
 
-            while (keepPlaying && !player.GameOver)
+            while (keepPlaying && !player.Dead && player.Level < 10)
             {
-                room = Maze.ShowMaze();
+                (MazeRoom room, var noEncounter) = maze.ShowMaze(changeX,changeY);
+                if (!noEncounter) Encounter();
                 roomMenu = null;
-                //Encounter();
-                roomMenu = EverShiftingMaze.GetRoomMenu(player, lastMove);
+                roomMenu = GameHelper.GetRoomMenu(player, room);
 
-                if (!player.GameOver)
+                if (!player.Dead&&player.Level<10)
                 {
-                    keepPlaying = ShowRoom(cave);
+                    (keepPlaying,changeX,changeY) = ShowRoom(cave);
                 }
-                else GameOver();
+                else
+                {
+                    GameOver();
+                }
             }
         }
 
 
-        private bool ShowRoom(Town town)
+        private (bool,int,int) ShowRoom(Town town)
         {
-            string choice = "";
-            bool keepPlaying = true;
+            string choice;
+            (bool keepPlaying,int changeX,int changeY) returnThis = (true,0,0);
             do
             {
                 roomMenu.UpdateMenuItem($"Current health: {player.CurrentHealth} / {player.MaxHealth}", 3);
@@ -56,13 +66,17 @@ namespace Uppgift3_TheGame
                 if (choice.StartsWith("Show")) player.ShowStats();
                 else if (choice.StartsWith("Attack")) Fight();
 
-            } while (!player.GameOver && choice != "Head back to town." && !choice.StartsWith("Go"));
+            } while (!player.Dead && choice != "Head back to town." && !choice.StartsWith("Go"));
 
-            if (choice == "Head back to town.") keepPlaying = EverShiftingMaze.PortalStone(player, town);
+            if (choice == "Head back to town.") returnThis = (GameHelper.PortalStone(player, town),0,0);
+            else
+            {
+                string lastMove = choice.Substring(choice.IndexOf(' ') + 1, choice.IndexOf('.') - (choice.IndexOf(' ') + 1));
+                returnThis.changeY = lastMove == "North" || lastMove == "South" ? lastMove == "North" ? -1 : +1 : 0;
+                returnThis.changeX = lastMove == "East" || lastMove == "West" ? lastMove == "East" ? +1 : -1 : 0;
+            }
 
-            else lastMove = choice.Substring(choice.IndexOf(' ') + 1, choice.IndexOf('.') - (choice.IndexOf(' ') + 1));
-
-            return keepPlaying;
+            return returnThis;
         }
 
         private void RemoveMobFromRoomMenu()
@@ -77,19 +91,14 @@ namespace Uppgift3_TheGame
             roomMenu.MenuItems.Insert(roomMenu.MenuItems.Count - 2, $"Attack {mob.Alias}.");
         }
 
-        //todo:make private and uncomment
-        internal void Encounter()
+        private void Encounter()
         {
-            //if (rng.Next(0, 7) > 4) BorderPrint("Amazingly, you encounter.... Nothing!");
-            //else
-            //{
-                mob = new Monster(player.Level);
-                BorderPrint($"You encounter a {mob.FullName}!");
-                Menu encounter = EverShiftingMaze.EncounterMenu(player, mob);
-                string choice = encounter.UseMenu();
-                if (choice == "Fight!") Fight();
-                else Flee();
-            //}
+            mob = new Monster(player.Level);
+            BorderPrint($"You encounter a {mob.FullName}!");
+            Menu encounter = GameHelper.EncounterMenu(player, mob);
+            var choice = encounter.UseMenu();
+            if (choice == "Fight!") Fight();
+            else Flee();
         }
 
         private void Flee()
@@ -101,7 +110,7 @@ namespace Uppgift3_TheGame
 
         private void Fight()
         {
-            int round = 1;
+            var round = 1;
             while (player.Alive && mob.Alive)
             {
                 CombatRoundPrint(round);
@@ -111,17 +120,26 @@ namespace Uppgift3_TheGame
                 {
                     Console.WriteLine($"{player.Name}: {player.CurrentHealth} hp, {mob.Name}: {mob.CurrentHealth} hp.");
                     round++;
-                    Hold();
                 }
             }
             if (player.Alive) player.Loot(mob.Corpse());
             mob = null;
         }
 
-        private static void GameOver()
+        private void GameOver()
         {
+            if (player.Level == 10)
+            {
+                BorderPrint("Congratulations you've reached level 10 and won the game!");
+                Menu endgame = GameHelper.EndGameMenu();
+                string choice = endgame.UseMenu();
+                if (choice == "Of course I deserve to be the ruler! (Challenge Dungeon Lord)") GameHelper.BossFight(player);
+
+            }
             string[] go = { "GAME OVER!", "Thanks for playing, hope you enjoyed it.", "", "Why not have another go?" };
             BorderPrint(go);
         }
+
+        
     }
 }

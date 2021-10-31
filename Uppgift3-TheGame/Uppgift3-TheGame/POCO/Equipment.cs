@@ -1,11 +1,16 @@
-﻿namespace Uppgift3_TheGame.POCO
+﻿// -----------------------------------------------------------------------------------------------
+//  Equipment.cs by Thomas Thorin, Copyright (C) 2021.
+//  Published under GNU General Public License v3 (GPL-3)
+// -----------------------------------------------------------------------------------------------
+
+namespace Uppgift3_TheGame.POCO
 {
     using System.Collections.Generic;
 
-    static internal class Equipment
+    internal static class Equipment
     {
         #region Weapons
-        static internal Weapon Fists = new Weapon
+        internal static Weapon Fists = new()
         {
             Name = "Fists",
             Damage = 0,
@@ -18,7 +23,7 @@
                 "punch a big hole in the air for"
             }
         };
-        static internal Weapon Stick = new Weapon
+        internal static Weapon Stick = new()
         {
             Name = "Stick",
             Damage = 5,
@@ -31,7 +36,7 @@
                 "hit the ground beside the enemy with your stick for a total of"
             }
         };
-        static internal Weapon Dagger = new Weapon
+        internal static Weapon Dagger = new()
         {
             Name = "Dagger",
             Damage = 10,
@@ -44,7 +49,7 @@
                 "drop your dagger to the ground, doing"
             }
         };
-        static internal Weapon Sword = new Weapon
+        internal static Weapon Sword = new()
         {
             Name = "Sword",
             Damage = 15,
@@ -57,7 +62,7 @@
                 "try to juggle your sword, managing to do"
             }
         };
-        static internal Weapon GreatAxe = new Weapon
+        internal static Weapon GreatAxe = new()
         {
             Name = "Great Axe",
             Damage = 20,
@@ -70,7 +75,7 @@
                 "manage to miss your toe with your great axe, inflicting"
             }
         };
-        static internal Weapon MagicSword = new Weapon
+        internal static Weapon MagicSword = new()
         {
             Name = "Magic Sword of Doom",
             Damage = 40,
@@ -84,11 +89,11 @@
             },
         };
 
-        static internal List<Weapon> WeaponsList = new() { Stick, Dagger, Sword, GreatAxe, MagicSword };
+        internal static List<Weapon> WeaponsList = new() { Stick, Dagger, Sword, GreatAxe, MagicSword };
 
         #endregion Weapons
         #region Armor
-        static internal Armor BirthdaySuit = new Armor
+        internal static Armor BirthdaySuit = new()
         {
             Name = "Birthday suit",
             Protection = 0,
@@ -101,7 +106,7 @@
                 "fall on your face and block"
             }
         };
-        static internal Armor Cloth = new Armor
+        internal static Armor Cloth = new()
         {
             Name = "Cloth coverings",
             Protection = 5,
@@ -109,12 +114,12 @@
             FlavourTexts = new string[4]
             {
                 "move out of the way and avoid",
-                "tangle the enemys attack with your cloth and blunts its force with",
+                "tangle the enemy's attack with your cloth and blunts its force with",
                 "stumble on a loose piece of cloth but manage to avoid",
                 "realize you shouldn't have wrapped yourself as a mummy when you block"
             }
         };
-        static internal Armor Leather = new Armor
+        internal static Armor Leather = new()
         {
             Name = "Leather armor",
             Protection = 10,
@@ -122,12 +127,12 @@
             FlavourTexts = new string[4]
             {
                 "dodge of the way and avoid",
-                "sigh in relief as your enemys attack scrape along your leathers and you block",
-                "misjudge your enemys speed but manage to avoid",
+                "sigh in relief as your enemy's attack scrape along your leathers and you block",
+                "misjudge your enemy's speed but manage to avoid",
                 "fall straight into the incoming attack and block"
             }
         };
-        static internal Armor Chainmail = new Armor
+        internal static Armor Chainmail = new()
         {
             Name = "Chainmail armor",
             Protection = 15,
@@ -140,7 +145,7 @@
                  "trip over your own feet and block"
             }
         };
-        static internal Armor Plate = new Armor
+        internal static Armor Plate = new()
         {
             Name = "Plate armor",
             Protection = 20,
@@ -153,7 +158,7 @@
                  "are blinded by your helmet, maybe try putting it on the other way? You avoid"
             }
         };
-        static internal Armor PowerArmor = new Armor
+        internal static Armor PowerArmor = new()
         {
             Name = "Power armor",
             Protection = 40,
@@ -166,9 +171,34 @@
                  "feel like you want to cry when the mystical energies in your armor winks out and absorbs"
             }
         };
-        static internal List<Armor> ArmorList = new() { Cloth, Leather, Chainmail, Plate, PowerArmor };
+        internal static List<Armor> ArmorList = new() { Cloth, Leather, Chainmail, Plate, PowerArmor };
         #endregion Armor
-        static internal List<Item> EquipmentList = new() { Stick, Dagger, Sword, GreatAxe, MagicSword, Cloth, Leather, Chainmail, Plate, PowerArmor };
-
+        internal static List<Item> EquipmentList = new() { Stick, Dagger, Sword, GreatAxe, MagicSword, Cloth, Leather, Chainmail, Plate, PowerArmor };
+        internal static Armor BossArmor = new()
+        {
+            Name = "Boss armor",
+            Protection = 40,
+            Price = 500,
+            FlavourTexts = new string[4]
+            {
+                 "expertly parries your blow, blocking",
+                 "almost disarms you with and amazing parry, blocking",
+                 "looks pained as you find a chink in his defenses, only blocking",
+                 "is completly suprised by your attack, avoiding a grand total of"
+            }
+        };
+        internal static Weapon BossWeapon = new()
+        {
+            Name = "Boss sword",
+            Damage = 40,
+            Price = 500,
+            FlavourTexts = new string[4]
+            {
+                "grins wickedly as his flaming swords bites into you for",
+                "yells triumphantly as he proceeds to carve you up with his flaming sword, inflicting",
+                "grimaces as he misjudges his blow and only does",
+                "is blinded by your awesomeness and does"
+            }
+        };
     }
 }

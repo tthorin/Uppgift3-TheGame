@@ -5,7 +5,7 @@
 
 namespace Uppgift3_TheGame.POCO
 {
-    
+
     internal class Weapon : Item
     {
         internal int Damage { get; set; } = 0;
