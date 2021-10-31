@@ -120,6 +120,7 @@ namespace Uppgift3_TheGame
                 {
                     Console.WriteLine($"{player.Name}: {player.CurrentHealth} hp, {mob.Name}: {mob.CurrentHealth} hp.");
                     round++;
+                    Hold();
                 }
             }
             if (player.Alive) player.Loot(mob.Corpse());
