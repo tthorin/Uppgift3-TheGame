@@ -10,7 +10,7 @@ namespace Uppgift3_TheGame
         public Game game;
         public static void Main()
         {
-            int percentEncounterChance = 6;
+            int percentEncounterChance = 0;
             Game game = new(percentEncounterChance);
             game.Start();
         }
