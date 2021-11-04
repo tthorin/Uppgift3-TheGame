@@ -145,6 +145,7 @@ namespace Uppgift3_TheGame
             boss.DeathScene = new Player.Scene(BossDeath);
             boss.Defense = 14;
             boss.Offense = 14;
+
         }
     }
 
