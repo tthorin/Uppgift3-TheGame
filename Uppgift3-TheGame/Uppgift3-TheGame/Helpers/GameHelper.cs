@@ -146,6 +146,7 @@ namespace Uppgift3_TheGame
             boss.Defense = 14;
             boss.Offense = 14;
 
+
         }
     }
 
